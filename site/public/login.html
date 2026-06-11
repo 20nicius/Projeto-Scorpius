@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+</head>
+<body>
+
+    <div id="toast" class="toast-message"></div>
+
+    <div class="login-card">
+        <div class="icon-container">
+            <img src="/1772889366508.png" alt="Ícone Soja IA" onerror="this.parentElement.innerHTML='<i class=\'fas fa-seedling\' style=\'font-size: 40px; color: var(--verde-soja)\'></i>'">
+        </div>
+
+        <div class="logo">Soja <span>IA</span></div>
+        <p>Bem-vindo de volta!</p>
+
+        <div id="lockdownArea">
+            <i class="fas fa-user-shield"></i> Acesso bloqueado por segurança.<br>
+            Tente novamente em: <span id="timer">00:00</span>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="email" id="email" placeholder="E-mail" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="passInput" placeholder="Senha" required>
+                <i class="far fa-eye-slash toggle-password" id="eyeIcon"></i>
+            </div>
+
+            <button type="submit" id="btnEntrar" class="btn-login">Entrar</button>
+        </form>
+
+        <p class="footer-text">
+            Esqueceu a senha? <a href="/redefinir">Redefinir</a><br><br>
+            Não tem uma conta? <a href="/cadastro">Cadastrar-se</a>
+        </p>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

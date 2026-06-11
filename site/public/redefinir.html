@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Redefinir Senha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root {
+            --verde-soja: #008b8b;
+            --laranja-action: #ff7f27;
+            --bg-gradiente: radial-gradient(circle, #ffffff 0%, #e0e0e0 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradiente);
+            padding: 20px;
+        }
+
+        .reset-card {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--verde-soja);
+            margin-bottom: 10px;
+        }
+
+        h2 { margin-bottom: 25px; color: #333; font-size: 22px; }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--verde-soja);
+            box-shadow: 0 0 8px rgba(0, 139, 139, 0.2);
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--laranja-action);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-action:hover {
+            background-color: #e66a1f;
+            transform: translateY(-2px);
+        }
+
+        .btn-action:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .footer-link {
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        .footer-link a {
+            color: var(--verde-soja);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%) !important;
+        }
+
+        html.dark-mode .reset-card {
+            background: #1d1d1d !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
+        }
+
+        html.dark-mode .logo {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode h2 {
+            color: #cccccc !important;
+        }
+
+        html.dark-mode .input-group i {
+            color: #666 !important;
+        }
+
+        html.dark-mode .input-group input {
+            background: #0f172a !important;
+            border-color: #333333 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode .input-group input:focus {
+            border-color: var(--verde-soja) !important;
+            box-shadow: 0 0 8px rgba(0, 139, 139, 0.3) !important;
+        }
+
+        html.dark-mode .btn-action {
+            background-color: var(--laranja-action) !important;
+            color: white !important;
+        }
+
+        html.dark-mode .btn-action:hover {
+            background-color: #e66a1f !important;
+        }
+
+        html.dark-mode .btn-action:disabled {
+            background-color: #444444 !important;
+        }
+
+        html.dark-mode .footer-link {
+            color: #aaaaaa !important;
+        }
+
+        html.dark-mode .footer-link a {
+            color: var(--verde-soja) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reset-card">
+        <div class="logo">Soja IA</div>
+        <h2>Recuperar Senha</h2>
+        
+        <form id="resetForm">
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Seu e-mail cadastrado" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Nova senha desejada" required>
+            </div>
+
+            <button type="submit" class="btn-action" id="submitBtn">Enviar Código</button>
+        </form>
+
+        <p class="footer-link">
+            Lembrou a senha? <a href="/login">Voltar ao Login</a>
+        </p>
+    </div>
+
+    <script>
+        const resetForm = document.getElementById('resetForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        resetForm.onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Bloqueia o botão para evitar múltiplos envios
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Processando...";
+
+            try {
+                // 1. Chama a API para gerar o código e enviar o e-mail
+                const res = await fetch('/api/solicitar-reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    // 2. Salva os dados necessários para o próximo passo no localStorage
+                    localStorage.setItem('pendingEmail', email);
+                    localStorage.setItem('pendingNewPassword', password);
+                    localStorage.setItem('flow', 'reset'); // Indica que o fluxo é de redefinição
+                    
+                    alert("Um código de verificação foi enviado para o seu e-mail!");
+                    
+                    // 3. Redireciona para a página de verificação
+                    window.location.href = "/verificar";
+                } else {
+                    alert(data.erro || "E-mail não encontrado ou erro no servidor.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Enviar Código";
+                }
+            } catch (err) {
+                alert("Erro ao conectar com o servidor. Tente novamente mais tarde.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Enviar Código";
+            }
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Créditos (Full HD)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root {
+            --verde-soja: #008b8b;
+            --laranja-action: #ff7f27;
+            --cinza-texto: #666;
+            --bg-site: #fdfdfd;
+            --sombra-card: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-site); 
+            color: #333; 
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* HEADER COM SOMBRA ADICIONADA */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 10%;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            /* Aplicação da sombra para destaque */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+            position: sticky; /* Opcional: mantém o header no topo ao rolar */
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 50px; }
+        
+        .logo-mark {
+            width: 42px; 
+            height: 42px;
+            background-color: var(--verde-soja);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        nav { display: flex; gap: 40px; }
+        
+        nav a { 
+            font-size: 18px; 
+            color: #999; 
+            font-weight: 500; 
+            cursor: pointer; 
+            transition: 0.3s;
+            text-decoration: none;
+        }
+        nav a:hover { color: var(--verde-soja); }
+        nav a.active { 
+            color: var(--verde-soja); 
+            border-bottom: 3px solid var(--verde-soja); 
+            padding-bottom: 2px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1700px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        h1 {
+            color: var(--verde-soja);
+            font-size: 62px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .title-underline {
+            width: 250px;
+            height: 6px;
+            background-color: var(--laranja-action);
+            margin: 15px 0 70px 0;
+        }
+
+        h2 {
+            color: var(--verde-soja);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 100px;
+        }
+
+        .card-member {
+            background: white;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            padding-left: 35px;
+            border-radius: 20px;
+            box-shadow: var(--sombra-card);
+            transition: transform 0.3s ease;
+        }
+
+        .card-member:hover { transform: translateY(-5px); }
+
+        .card-member h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .card-tech {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: var(--sombra-card);
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-tech:hover { transform: translateY(-5px); }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tech-icon {
+            width: 60px;
+            height: 60px;
+            color: var(--verde-soja);
+        }
+
+        .tech-info h4 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #222;
+        }
+
+        .tech-info p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        @media (max-width: 1400px) {
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background: #0d1117 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode header {
+            background: #1d1d1d !important;
+            border-bottom-color: #333333 !important;
+        }
+
+        html.dark-mode nav a {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode nav a:hover,
+        html.dark-mode nav a.active {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode h1 {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .title-underline {
+            background-color: var(--laranja-action) !important;
+        }
+
+        html.dark-mode h2 {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .card-member {
+            background: #1d1d1d !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+        }
+
+        html.dark-mode .card-member h3 {
+            color: #cccccc !important;
+        }
+
+        html.dark-mode .card-tech {
+            background: #1d1d1d !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+        }
+
+        html.dark-mode .tech-icon {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .tech-info h4 {
+            color: #cccccc !important;
+        }
+
+        html.dark-mode .tech-info p {
+            color: #aaaaaa !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a href="main.html" class="brand">
+                <div class="logo-mark"></div>
+            </a>
+            <nav>
+                <a href="saiba_mais.html">Saiba mais</a>
+                <a href="credito.html" class="active">Créditos</a>
+                <a href="#">Planos</a>
+                <a href="novidades.html">Novidades</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Créditos</h1>
+        <div class="title-underline"></div>
+
+        <section>
+            <h2>Equipe</h2>
+            <div class="team-grid">
+                <div class="card-member"><h3>Miguel Augusto</h3></div>
+                <div class="card-member"><h3>Marcos Vinicius</h3></div>
+                <div class="card-member"><h3>Julio Cesar</h3></div>
+                <div class="card-member"><h3>Andrey Aparecido</h3></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Utilização de Terceiros</h2>
+            <div class="tech-grid">
+                <div class="card-tech">
+                    <div class="tech-item">
+                        <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <div class="tech-info">
+                            <h4>Nodejs</h4>
+                            <p>Usado em larga escala para o back-end</p>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <div class="tech-info">
+                            <h4>Processamento</h4>
+                            <p>Usado para processamento de dados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-tech">
+                    <div class="tech-item">
+                        <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <div class="tech-info">
+                            <h4>Integração</h4>
+                            <p>Usado na integração de sistemas</p>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <div class="tech-info">
+                            <h4>Gerenciamento</h4>
+                            <p>Usado no gerenciamento de pacotes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-tech">
+                    <div class="tech-item">
+                        <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <div class="tech-info">
+                            <h4>Automação</h4>
+                            <p>Utilizado para scripts de automação</p>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <div class="tech-info">
+                            <h4>Performance</h4>
+                            <p>Hospedado em servidores de alta performance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

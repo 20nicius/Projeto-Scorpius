@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Verificar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root { 
+            --verde: #008b8b; 
+            --laranja: #ff7f27; 
+            --vermelho: #d9534f;
+            --bg: radial-gradient(circle, #fff 0%, #e0e0e0 100%); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: var(--bg); 
+            padding: 20px; 
+        }
+
+        .card { 
+            background: white; 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 40px 30px; 
+            border-radius: 30px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); 
+            text-align: center; 
+        }
+
+        h2 { color: var(--verde); font-size: 24px; margin-bottom: 10px; font-weight: 800; }
+        p { color: #666; font-size: 14px; margin-bottom: 25px; }
+
+        .code-input { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid #eee; 
+            border-radius: 12px; 
+            font-size: 22px; 
+            text-align: center; 
+            letter-spacing: 8px; 
+            font-weight: 800; 
+            margin-bottom: 20px; 
+            outline: none; 
+            transition: 0.3s; 
+        }
+        .code-input:focus { border-color: var(--verde); }
+        .code-input:disabled { background: #f5f5f5; cursor: not-allowed; }
+
+        .btn { 
+            width: 100%; 
+            padding: 15px; 
+            border: none; 
+            border-radius: 12px; 
+            background: var(--verde); 
+            color: white; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+        .btn:hover:not(:disabled) { background: #007575; transform: translateY(-2px); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* ÁREA DE BLOQUEIO */
+        #lockdownArea { 
+            background: #fff1f0; color: var(--vermelho); padding: 12px; 
+            border-radius: 12px; border: 1px solid #ffa39e; margin-bottom: 20px; 
+            display: none; font-weight: 700; font-size: 13px;
+        }
+
+        /* ESTILO DO TOAST */
+        .toast-message {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background-color: #333; color: white; padding: 12px 25px; border-radius: 50px;
+            font-size: 14px; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none; z-index: 1000; animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp { from { bottom: -50px; opacity: 0; } to { bottom: 20px; opacity: 1; } }
+        .toast-error { background-color: var(--vermelho); }
+        .toast-success { background-color: var(--verde); }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%) !important;
+        }
+
+        html.dark-mode .card {
+            background: #1d1d1d !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
+        }
+
+        html.dark-mode h2 {
+            color: var(--verde) !important;
+        }
+
+        html.dark-mode p {
+            color: #aaaaaa !important;
+        }
+
+        html.dark-mode .code-input {
+            background: #0f172a !important;
+            border-color: #333333 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode .code-input:focus {
+            border-color: var(--verde) !important;
+        }
+
+        html.dark-mode .code-input:disabled {
+            background: #1a1a1a !important;
+        }
+
+        html.dark-mode .btn {
+            background: var(--verde) !important;
+        }
+
+        html.dark-mode .btn:hover:not(:disabled) {
+            background: #00a3a3 !important;
+        }
+
+        html.dark-mode .btn:disabled {
+            background: #444444 !important;
+        }
+
+        html.dark-mode #lockdownArea {
+            background: #2a1a1a !important;
+            color: #ff8b7b !important;
+            border-color: #5a3a3a !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast-message"></div>
+
+    <div class="card">
+        <h2 id="title">Verificação</h2>
+        <p>Digite o código de 6 dígitos enviado ao seu e-mail.</p>
+
+        <div id="lockdownArea">
+            <i class="fas fa-shield-alt"></i> Muitas tentativas de código!<br>
+            Aguarde: <span id="timer">00:00</span>
+        </div>
+
+        <input type="text" id="codeInput" class="code-input" maxlength="6" placeholder="000000">
+        <button id="verifyBtn" class="btn">Confirmar</button>
+    </div>
+    
+<script>
+    const codeInput = document.getElementById('codeInput');
+    const verifyBtn = document.getElementById('verifyBtn');
+
+    // 1. Unificação da lógica de verificação
+    async function validarProcesso() {
+        const code = codeInput.value.trim();
+        const flow = localStorage.getItem('flow');
+        const email = localStorage.getItem('pendingEmail');
+        const token = localStorage.getItem('token'); // Necessário para exclusão
+
+        if (!flow) {
+            alert("Fluxo inválido. Retorne à página anterior e solicite um novo código.");
+            window.location.href = "/redefinir";
+            return;
+        }
+
+        if (flow === 'reset' && (!email || !localStorage.getItem('pendingNewPassword'))) {
+            alert("Os dados da redefinição expiraram. Solicite um novo código.");
+            window.location.href = "/redefinir";
+            return;
+        }
+
+        if (code.length < 6) {
+            alert("Por favor, insira o código de 6 dígitos.");
+            return;
+        }
+
+        verifyBtn.disabled = true;
+        verifyBtn.innerText = "Verificando...";
+
+        let url = '/api/verificar-geral';
+        let headers = { 'Content-Type': 'application/json' };
+        let body = { email, code, flow };
+
+        // AJUSTE PARA EXCLUSÃO: Se for delete, muda a rota e adiciona o Token
+        if (flow === 'delete') {
+            url = '/api/confirmar-exclusao';
+            headers['Authorization'] = `Bearer ${token}`;
+            body = { code }; // O email o servidor extrai do Token por segurança
+        } 
+        // AJUSTE PARA RESET: Se for reset, envia a nova senha junto
+        else if (flow === 'reset') {
+            const newPassword = localStorage.getItem('pendingNewPassword');
+            if (!newPassword) {
+                alert("Os dados da redefinição expiraram. Solicite um novo código.");
+                window.location.href = "/redefinir";
+                return;
+            }
+            body.newPassword = newPassword;
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(body)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.mensagem || "Sucesso!");
+                
+                if (flow === 'cadastro' || flow === 'reset') {
+                    // Se for login/cadastro, salva o novo token e vai para a home
+                    if (data.token) localStorage.setItem('token', data.token);
+                    if (data.name_user) localStorage.setItem('userName', data.name_user);
+                    window.location.href = "/";
+                } else {
+                    // Se for exclusão, limpa tudo e vai para o login
+                    localStorage.clear();
+                    window.location.href = "/login";
+                }
+            } else {
+                alert(data.erro || "Código inválido ou expirado.");
+                verifyBtn.disabled = false;
+                verifyBtn.innerText = "Confirmar";
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Erro ao conectar com o servidor.");
+            verifyBtn.disabled = false;
+            verifyBtn.innerText = "Confirmar";
+        }
+    }
+
+    // 2. Garante que apenas números sejam digitados
+    codeInput.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 6);
+    });
+
+    // 3. Atalho: Enter para confirmar
+    codeInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') validarProcesso();
+    });
+
+    // 4. Liga a função ao clique do botão
+    verifyBtn.onclick = validarProcesso;
+</script>
+</body>
+</html>

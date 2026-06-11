@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Configurações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root {
+            --verde-soja: #008b8b;
+            --laranja-action: #ff7f27;
+            --cinza-bg: #f0f0f0;
+            --cinza-input: #e8e8e8;
+            --vermelho-cancel: #dc3545;
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --surface-strong: #e0e0e0;
+            --text: #222222;
+            --muted: #666666;
+            --border: #dddddd;
+            --shadow: rgba(0,0,0,0.08);
+            --shadow-light: rgba(255,255,255,0.08);
+            --sidebar-logo: #ffffff;
+            --btn-secondary-bg: #ffffff;
+            --btn-secondary-color: #666666;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 180px;
+            background: var(--verde-soja);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .sidebar-logo {
+            width: 30px;
+            height: 30px;
+            background: var(--sidebar-logo);
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sidebar-link {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .sidebar-back-button {
+            margin-top: auto;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-back-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* MAIN CONTENT */
+        .main-container {
+            flex: 1;
+            padding: 50px 60px;
+            background: var(--bg);
+        }
+
+        .config-header {
+            margin-bottom: 40px;
+        }
+
+        .config-header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 30px;
+        }
+
+        /* TABS */
+        .tabs-container {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .tab-button:hover {
+            color: var(--verde-soja);
+        }
+
+        .tab-button.active {
+            color: var(--verde-soja);
+            border-bottom-color: var(--verde-soja);
+        }
+
+        /* TAB CONTENT */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* FORM FIELDS */
+        .content-wrapper {
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-group-label {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 15px;
+            min-width: 120px;
+        }
+
+        .form-group-input-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .form-group-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--cinza-input);
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--muted);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group-input:focus {
+            outline: none;
+            background: #ddd;
+        }
+
+        .form-group-input:disabled {
+            background: var(--cinza-input);
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .btn-change {
+            padding: 8px 16px;
+            background: transparent;
+            color: var(--verde-soja);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-change:hover {
+            color: #007070;
+        }
+
+        .btn-change.cancel {
+            color: var(--vermelho-cancel);
+        }
+
+        .btn-change.cancel:hover {
+            color: #c82333;
+        }
+
+        .btn-change.save {
+            color: var(--verde-soja);
+        }
+
+        .btn-change.save:hover {
+            color: #007070;
+        }
+
+        /* DARK MODE TOGGLE */
+        .toggle-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: #ddd;
+            border-radius: 14px;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+            border: none;
+            padding: 0;
+        }
+
+        .toggle-switch.active {
+            background: var(--verde-soja);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 12px;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            left: 24px;
+        }
+
+        .dark-mode {
+            background: #121212;
+            color: #f0f0f0;
+        }
+
+        .dark-mode .main-container {
+            background: #111111;
+        }
+
+        .dark-mode .sidebar-logo {
+            background: #ffffff;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .dark-mode .sidebar-back-button {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+        }
+
+        .dark-mode .tabs-container {
+            border-bottom-color: #333333;
+        }
+
+        .dark-mode .tab-button {
+            color: #bbbbbb;
+        }
+
+        .dark-mode .tab-button.active {
+            color: var(--verde-soja);
+            border-bottom-color: var(--verde-soja);
+        }
+
+        .dark-mode .config-header h1 {
+            color: #ffffff;
+        }
+
+        .dark-mode .content-wrapper {
+            background: #1d1d1d;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .dark-mode .form-group-label {
+            color: #dddddd;
+        }
+
+        .dark-mode .form-group-input {
+            background: #111111;
+            color: #f0f0f0;
+            border: 1px solid #333333;
+        }
+
+        .dark-mode .form-group-input:focus {
+            background: #1a1a1a;
+        }
+
+        .dark-mode .form-group-input:disabled {
+            background: #1a1a1a;
+            color: #999999;
+        }
+
+        .dark-mode .btn-cancel {
+            background: #1f1f1f;
+            color: #f0f0f0;
+            border-color: #333333;
+        }
+
+        .dark-mode .btn-cancel:hover {
+            background: #2a2a2a;
+        }
+
+        .toggle-switch.active::after {
+            left: 24px;
+        }
+
+        /* BUTTONS */
+        .buttons-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-cancel {
+            background: var(--btn-secondary-bg);
+            color: var(--btn-secondary-color);
+            border: 1px solid var(--border);
+        }
+
+        .btn-cancel:hover {
+            background: #e5e5e5;
+        }
+
+        .btn-save {
+            background: var(--verde-soja);
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #007070;
+        }
+    
+        .device-item {
+            background: var(--surface-strong);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--verde-soja);
+            color: var(--text);
+            /* Alinha ID e Select na mesma linha */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .device-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilização do Select para combinar com o seu tema */
+        .route-select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background-color: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+
+
+        /* MEDIA QUERIES */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+                flex-direction: row;
+                gap: 20px;
+                align-items: center;
+            }
+
+            .sidebar-menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+
+            .main-container {
+                padding: 30px 20px;
+            }
+
+            .config-header h1 {
+                font-size: 28px;
+            }
+
+            .tabs-container {
+                flex-wrap: wrap;
+            }
+
+            .tab-button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            .content-wrapper {
+                padding: 25px;
+            }
+
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .form-group-input-wrapper {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .form-group-input {
+                width: 100%;
+            }
+
+            .buttons-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="config-page">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo"></div>
+        <nav class="sidebar-menu">
+            <a href="#conta" class="sidebar-link active" onclick="switchSidebarSection(event, 'account')">Conta</a>
+            <a href="#dispositivos" class="sidebar-link" onclick="switchSidebarSection(event, 'devices')">Dispositivos</a>
+               <!-- Codigo Desativado por enquanto por que nao tem motivo de usa agora, pois 1 deles depois vai ser mudado para a aba de dispositivos e o outro para alguma outra coisa-->
+            <!-- <a href="#notificacoes" class="sidebar-link" onclick="switchSidebarSection(event, 'notifications')">Notificações</a> -->
+        </nav>
+        <button class="sidebar-back-button" onclick="goToMain()">← Voltar</button>
+    </aside>
+
+    <main class="main-container">
+        <div id="accountPage" class="page-content">
+            <div class="config-header">
+                <h1>Configurações</h1>
+            </div>
+
+            <div class="tabs-container">
+                <button class="tab-button active" onclick="switchTabContent(event, 'conta')">Conta</button>
+                <button class="tab-button" onclick="switchTabContent(event, 'seguranca')">Segurança</button>
+                <button class="tab-button" onclick="switchTabContent(event, 'notificacoes')">Notificações</button>
+            </div>
+
+            <div class="content-wrapper">
+            <!-- TAB: CONTA -->
+            <div id="conta" class="tab-content active">
+                <div class="form-group">
+                    <label class="form-group-label">Nome</label>
+                    <div class="form-group-input-wrapper">
+                        <input type="text" id="nameInput" class="form-group-input" placeholder="Exemplo: ADM" value="ADM" disabled>
+                        <button class="btn-change" id="nameBtn" onclick="startEditName()">Mudar</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-group-label">Email</label>
+                    <div class="form-group-input-wrapper">
+                        <input type="email" id="emailInput" class="form-group-input" placeholder="Exemplo: contadoadm@gmail.com" value="contadoadm@gmail.com" disabled>
+                        <button class="btn-change" id="emailBtn" onclick="startEditEmail()">Mudar</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-group-label">Senha</label>
+                    <div class="form-group-input-wrapper">
+                        <input type="password" class="form-group-input" value="OOOOOOOOOOOOOOO" readonly>
+                        <button class="btn-change" onclick="changePassword()">Mudar</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-group-label">Modo Escuro</label>
+                    <button class="toggle-switch active" id="darkModeToggle" onclick="toggleDarkMode(this)"></button>
+                </div>
+            </div>
+
+            <!-- TAB: SEGURANÇA -->
+            <div id="seguranca" class="tab-content">
+                <div class="form-group">
+                    <label class="form-group-label">Autenticação de Dois Fatores</label>
+                    <button class="toggle-switch" id="twoFactorToggle" onclick="toggleTwoFactor(this)"></button>
+                </div>
+                <div class="form-group">
+                    <label class="form-group-label">Sessões Ativas</label>
+                    <button class="btn-change" onclick="manageSessions()">Gerenciar</button>
+                </div>
+            </div>
+
+            <!-- TAB: NOTIFICAÇÕES -->
+            <div id="notificacoes" class="tab-content">
+                <div class="form-group">
+                    <label class="form-group-label">Notificações por Email</label>
+                    <button class="toggle-switch active" id="emailNotificationsToggle" onclick="toggleEmailNotifications(this)"></button>
+                </div>
+                <div class="form-group">
+                    <label class="form-group-label">Alertas de Segurança</label>
+                    <button class="toggle-switch active" id="securityAlertsToggle" onclick="toggleSecurityAlerts(this)"></button>
+                </div>
+                <div class="form-group">
+                    <label class="form-group-label">Notificações de Mapas</label>
+                    <button class="toggle-switch" id="mapNotificationsToggle" onclick="toggleMapNotifications(this)"></button>
+                </div>
+            </div>
+
+            <div class="buttons-group">
+                <button class="btn btn-cancel" onclick="goToMain()">Cancelar</button>
+                <button class="btn btn-save" onclick="saveGlobalChanges()">Salvar alterações</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="devicesPage" class="page-content" style="display:none;">
+        <div class="config-header">
+            <h1>Dispositivos</h1>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <span class="setting-title">Novo Dispositivo</span>
+                    <span class="setting-desc">Parear sensor via Bluetooth para registro</span>
+                </div>
+                <button class="btn-action" onclick="parearDispositivo()">
+                    <i class="fab fa-bluetooth-b"></i> Conectar
+                </button>
+            </div>
+
+        </div>
+        <div class="content-wrapper" id="dispositivos-container">
+            <p class="placeholder-text">Painel de dispositivos.</p>
+        </div>
+
+    </div>
+</main>
+
+    <script>
+        let currentUserData = {};
+        let editingField = null;
+        let pendingNewEmail = null;
+
+        function showToast(message, isError = true) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 600;
+                z-index: 9999;
+                animation: slideIn 0.3s;
+                background: ${isError ? '#dc3545' : '#28a745'};
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function handleEmailChangeConfirmed() {
+            if (localStorage.getItem('emailChangeConfirmed') === 'true') {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('emailChangeConfirmed');
+                localStorage.removeItem('newEmailConfirmed');
+                showToast('Email atualizado. Faça login novamente.', false);
+                window.location.href = '/login';
+                return true;
+            }
+            return false;
+        }
+
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'emailChangeConfirmed' && event.newValue === 'true') {
+                handleEmailChangeConfirmed();
+            }
+        });
+
+        function setDarkMode(enabled) {
+            const button = document.getElementById('darkModeToggle');
+            if (enabled) {
+                document.documentElement.classList.add('dark-mode');
+                if (button) button.classList.add('active');
+            } else {
+                document.documentElement.classList.remove('dark-mode');
+                if (button) button.classList.remove('active');
+            }
+            localStorage.setItem('darkMode', enabled ? 'true' : 'false');
+        }
+
+        // --- PROTEÇÃO DE ROTA ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+            setDarkMode(darkModeEnabled);
+
+            if (handleEmailChangeConfirmed()) return;
+
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = "/login";
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/checar-sessao', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    throw new Error("Sessão expirada");
+                }
+
+                // Carregar dados do usuário
+                await loadUserData();
+            } catch (err) {
+                localStorage.clear();
+                window.location.href = "/login";
+            }
+        });
+
+        // --- CARREGAR DADOS DO USUÁRIO ---
+        async function loadUserData() {
+            const token = localStorage.getItem('token');
+            try {
+                if (handleEmailChangeConfirmed()) return;
+
+                const res = await fetch('/api/me', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => null);
+                    if (res.status === 404 && errData?.emailUpdated) {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('userName');
+                        window.location.href = "/login";
+                        return;
+                    }
+                    throw new Error(errData?.erro || "Erro ao carregar dados");
+                }
+
+                currentUserData = await res.json();
+
+                // Preencher os campos com os dados reais
+                const nameInput = document.getElementById('nameInput');
+                const emailInput = document.getElementById('emailInput');
+
+                if (nameInput) nameInput.value = currentUserData.name;
+                if (emailInput) emailInput.value = currentUserData.email;
+
+                // Verificar se há mudanças pendentes de email
+                await checkPendingEmailChange();
+            } catch (err) {
+                console.error(err);
+                showToast("Erro ao carregar dados do usuário");
+            }
+        }
+
+        // --- VERIFICAR MUDANÇAS PENDENTES DE EMAIL ---
+        async function checkPendingEmailChange() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const res = await fetch('/api/verificar-mudanca-email-pendente', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.pending && data.newEmail) {
+                        pendingNewEmail = data.newEmail;
+                        const emailBtn = document.getElementById('emailBtn');
+                        const emailInput = document.getElementById('emailInput');
+
+                        if (emailBtn && emailInput) {
+                            emailInput.value = data.newEmail;
+                            emailInput.disabled = true;
+                            emailBtn.textContent = 'Aguardando confirmação';
+                            emailBtn.disabled = true;
+                            editingField = 'email';
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Erro ao verificar mudanças pendentes:', err);
+            }
+        }
+
+        // --- VERIFICAR STATUS DA CONFIRMAÇÃO DE EMAIL ---
+        async function checkEmailConfirmationStatus() {
+            const token = localStorage.getItem('token');
+            if (!token || !pendingNewEmail) return;
+
+            try {
+                const res = await fetch('/api/me', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.ok) {
+                    const userData = await res.json();
+                    const emailInput = document.getElementById('emailInput');
+
+                    // Se o email foi atualizado no backend
+                    if (userData.email === pendingNewEmail) {
+                        currentUserData.email = userData.email;
+                        if (emailInput) emailInput.value = userData.email;
+
+                        // Resetar estado
+                        const emailBtn = document.getElementById('emailBtn');
+                        if (emailBtn) {
+                            emailBtn.textContent = 'Mudar';
+                            emailBtn.disabled = false;
+                            emailBtn.onclick = startEditEmail;
+                        }
+
+                        // Limpar intervalo de verificação
+                        if (emailCheckInterval) {
+                            clearInterval(emailCheckInterval);
+                            emailCheckInterval = null;
+                        }
+
+                        pendingNewEmail = null;
+                        editingField = null;
+
+                        showToast("Email atualizado com sucesso!", false);
+                    }
+                }
+            } catch (err) {
+                console.error('Erro ao verificar status da confirmação:', err);
+            }
+        }
+
+        // --- LISTENER PARA QUANDO A PÁGINA GANHA FOCO ---
+        window.addEventListener('focus', async () => {
+            if (handleEmailChangeConfirmed()) return;
+
+            // Verificar se a confirmação foi feita enquanto o usuário estava fora
+            if (pendingNewEmail) {
+                await checkEmailConfirmationStatus();
+            }
+        });
+
+        // TAB SWITCHING
+        function switchTabContent(event, tabName) {
+            event.preventDefault();
+
+            // Remove active class from all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Add active class to selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            if (event.target && event.target.classList) {
+                event.target.classList.add('active');
+            }
+        }
+
+        function switchSidebarSection(event, sectionName) {
+            event.preventDefault();
+
+            const links = document.querySelectorAll('.sidebar-link');
+            links.forEach(link => link.classList.remove('active'));
+            if (event.target && event.target.classList) {
+                event.target.classList.add('active');
+            }
+
+            const accountPage = document.getElementById('accountPage');
+            const devicesPage = document.getElementById('devicesPage');
+
+            if (sectionName === 'account') {
+                if (accountPage) accountPage.style.display = 'block';
+                if (devicesPage) devicesPage.style.display = 'none';
+            } else if (sectionName === 'devices') {
+                if (accountPage) accountPage.style.display = 'none';
+                if (devicesPage) devicesPage.style.display = 'block';
+            }
+        }
+
+        // --- EDITAR NOME ---
+        function startEditName() {
+            if (editingField) cancelEdit();
+            
+            editingField = 'name';
+            const nameInput = document.getElementById('nameInput');
+            const nameBtn = document.getElementById('nameBtn');
+            
+            nameInput.disabled = false;
+            nameInput.focus();
+            
+            nameBtn.textContent = 'Salvar';
+            nameBtn.classList.add('save');
+            nameBtn.onclick = saveName;
+            
+            // Criar botão cancelar
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'btn-change cancel';
+            cancelBtn.textContent = 'Cancelar';
+            cancelBtn.onclick = cancelEdit;
+            nameBtn.parentElement.insertBefore(cancelBtn, nameBtn.nextSibling);
+        }
+
+        async function saveName() {
+            const nameInput = document.getElementById('nameInput');
+            const newName = nameInput.value.trim();
+
+            if (newName.length < 3) {
+                showToast("O nome deve ter pelo menos 3 caracteres");
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch('/api/update-name', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ newName })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    showToast(data.erro || "Erro ao atualizar nome");
+                    return;
+                }
+
+                currentUserData.name = data.name;
+                localStorage.setItem('userName', data.name);
+                
+                showToast("Nome atualizado com sucesso!", false);
+                cancelEdit();
+            } catch (err) {
+                console.error(err);
+                showToast("Erro ao conectar com o servidor");
+            }
+        }
+
+        // --- EDITAR EMAIL ---
+        function startEditEmail() {
+            if (editingField) cancelEdit();
+            
+            editingField = 'email';
+            const emailInput = document.getElementById('emailInput');
+            const emailBtn = document.getElementById('emailBtn');
+            
+            emailInput.disabled = false;
+            emailInput.focus();
+            
+            emailBtn.textContent = 'Salvar';
+            emailBtn.classList.add('save');
+            emailBtn.onclick = saveEmail;
+            
+            // Criar botão cancelar
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'btn-change cancel';
+            cancelBtn.textContent = 'Cancelar';
+            cancelBtn.onclick = cancelEdit;
+            emailBtn.parentElement.insertBefore(cancelBtn, emailBtn.nextSibling);
+        }
+
+        async function saveEmail() {
+            const emailInput = document.getElementById('emailInput');
+            const emailBtn = document.getElementById('emailBtn');
+            const newEmail = emailInput.value.trim();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(newEmail)) {
+                showToast("Por favor, digite um email válido");
+                return;
+            }
+
+            if (newEmail === currentUserData.email) {
+                showToast("O novo email é igual ao atual");
+                cancelEdit();
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch('/api/solicitar-mudanca-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ newEmail })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    showToast(data.erro || "Erro ao solicitar mudança de email");
+                    emailInput.value = currentUserData.email;
+                    return;
+                }
+
+                pendingNewEmail = newEmail;
+                emailInput.disabled = true;
+                emailBtn.textContent = 'Aguardando confirmação';
+                emailBtn.disabled = true;
+
+                showToast("Verifique seu email atual para confirmar a troca de email.", false);
+
+                // Iniciar verificação periódica da confirmação
+                startEmailConfirmationCheck();
+            } catch (err) {
+                console.error(err);
+                showToast("Erro ao conectar com o servidor");
+                emailInput.value = currentUserData.email;
+            }
+        }
+
+        // --- VERIFICAÇÃO PERIÓDICA DA CONFIRMAÇÃO DE EMAIL ---
+        let emailCheckInterval = null;
+
+        function startEmailConfirmationCheck() {
+            // Limpar intervalo anterior se existir
+            if (emailCheckInterval) {
+                clearInterval(emailCheckInterval);
+            }
+
+            // Verificar a cada 5 segundos
+            emailCheckInterval = setInterval(async () => {
+                await checkEmailConfirmationStatus();
+            }, 5000);
+
+            // Parar após 2 minutos (24 verificações)
+            setTimeout(() => {
+                if (emailCheckInterval) {
+                    clearInterval(emailCheckInterval);
+                    emailCheckInterval = null;
+                }
+            }, 120000);
+        }
+
+        // --- CANCELAR EDIÇÃO ---
+        function cancelEdit() {
+            if (editingField === 'name') {
+                const nameInput = document.getElementById('nameInput');
+                const nameBtn = document.getElementById('nameBtn');
+                
+                nameInput.value = currentUserData.name;
+                nameInput.disabled = true;
+                
+                nameBtn.textContent = 'Mudar';
+                nameBtn.classList.remove('save');
+                nameBtn.onclick = startEditName;
+                
+                // Remover botão cancelar
+                const cancelBtn = nameBtn.nextElementSibling;
+                if (cancelBtn && cancelBtn.classList.contains('cancel')) {
+                    cancelBtn.remove();
+                }
+            } else if (editingField === 'email') {
+                const emailInput = document.getElementById('emailInput');
+                const emailBtn = document.getElementById('emailBtn');
+                
+                emailInput.value = currentUserData.email;
+                emailInput.disabled = true;
+                
+                emailBtn.textContent = 'Mudar';
+                emailBtn.classList.remove('save');
+                emailBtn.onclick = startEditEmail;
+                emailBtn.disabled = false;
+                
+                // Remover botão cancelar
+                const cancelBtn = emailBtn.nextElementSibling;
+                if (cancelBtn && cancelBtn.classList.contains('cancel')) {
+                    cancelBtn.remove();
+                }
+
+                // Limpar intervalo de verificação
+                if (emailCheckInterval) {
+                    clearInterval(emailCheckInterval);
+                    emailCheckInterval = null;
+                }
+
+                pendingNewEmail = null;
+            }
+            
+            editingField = null;
+        }
+
+        // --- MUDAR SENHA (usando o mecanismo de reset) ---
+        async function changePassword() {
+            const email = currentUserData.email;
+
+            if (!email) {
+                showToast("Email não encontrado. Faça login novamente.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/solicitar-reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    showToast(data.erro || "Erro ao solicitar reset");
+                    return;
+                }
+
+                localStorage.setItem('pendingEmail', email);
+                localStorage.setItem('flow', 'reset');
+
+                showToast("Código de verificação enviado para seu email!", false);
+
+                setTimeout(() => {
+                    window.location.href = "/verificar";
+                }, 1500);
+            } catch (err) {
+                console.error(err);
+                showToast("Erro ao conectar com o servidor");
+            }
+        }
+
+        // --- TOGGLE FUNCTIONS ---
+        function toggleDarkMode(button) {
+            const enabled = !document.documentElement.classList.contains('dark-mode');
+            setDarkMode(enabled);
+        }
+
+        function toggleTwoFactor(button) {
+            button.classList.toggle('active');
+        }
+
+        function toggleEmailNotifications(button) {
+            button.classList.toggle('active');
+        }
+
+        function toggleSecurityAlerts(button) {
+            button.classList.toggle('active');
+        }
+
+        function toggleMapNotifications(button) {
+            button.classList.toggle('active');
+        }
+
+        function manageSessions() {
+            showToast("Apenas uma sessão é permitida por conta.", false);
+        }
+
+        // --- AÇÕES GLOBAIS ---
+        function goToMain() {
+            window.location.href = "/main.html";
+        }
+
+        function saveGlobalChanges() {
+            showToast("Alterações salvas com sucesso!", false);
+        }
+    </script>
+    
+    <script src="connect.js"></script>
+        
+</body>
+</html>

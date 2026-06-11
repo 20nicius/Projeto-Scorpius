@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Novidades</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root {
+            --verde-soja: #008b8b;
+            --laranja-action: #ff7f27;
+            --bg-site: #f4f7f6;
+            --sombra-card: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-site); 
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* HEADER COM SOMBRA E NAVEGAÇÃO FUNCIONAL */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 5%;
+            background: #fff;
+            /* Sombra na divisão adicionada */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Ajustes no Nav para suportar as tags <a> */
+        header nav {
+            display: flex; 
+            gap: 30px; 
+            color: #999; 
+            font-weight: 500;
+        }
+
+        header nav a {
+            color: #999;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+            padding-bottom: 5px;
+        }
+
+        header nav a:hover {
+            color: var(--verde-soja);
+        }
+
+        header nav a.active {
+            color: var(--verde-soja); 
+            border-bottom: 3px solid var(--verde-soja);
+        }
+
+        .container {
+            width: 90%; 
+            max-width: 1700px; 
+            margin: 50px auto;
+        }
+
+        /* TÍTULO IMPACTANTE À ESQUERDA */
+        h1 { 
+            color: var(--verde-soja); 
+            font-size: 70px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: -3px;
+            line-height: 0.9;
+        }
+
+        .subtitle { 
+            color: var(--verde-soja); 
+            font-size: 26px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .title-underline { 
+            width: 300px; 
+            height: 10px; 
+            background-color: var(--laranja-action); 
+            margin: 25px 0 120px 0; 
+        }
+
+        /* GRID DE 2 COLUNAS LARGAS */
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 130px 50px;
+        }
+
+        .news-card {
+            background: white;
+            padding: 85px 50px 45px 50px;
+            border-radius: 25px;
+            box-shadow: var(--sombra-card);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .floating-icon {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95px; height: 95px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        .floating-icon svg { width: 45px; height: 45px; color: var(--verde-soja); }
+
+        .news-card h3 { font-size: 28px; font-weight: 800; color: var(--verde-soja); margin-bottom: 10px; }
+        .news-date { font-size: 15px; color: #aaa; margin-bottom: 25px; display: block; }
+        
+        .news-text { 
+            font-size: 16px; 
+            color: #555; 
+            margin-bottom: 35px; 
+            line-height: 1.7; 
+            word-wrap: break-word; 
+        }
+
+        .btn-more {
+            background-color: var(--laranja-action);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            float: right;
+            transition: background 0.2s;
+        }
+
+        .btn-more:hover { background-color: #e66a1f; }
+
+        .news-card::after { content: ""; display: table; clear: both; }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 1000px) {
+            h1 { font-size: 60px; }
+            .news-grid { grid-template-columns: 1fr; }
+        }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background-color: #0d1117 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode header {
+            background: #1d1d1d !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        html.dark-mode header nav {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode header nav a {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode header nav a:hover,
+        html.dark-mode header nav a.active {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode h1,
+        html.dark-mode .subtitle {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .title-underline {
+            background-color: var(--laranja-action) !important;
+        }
+
+        html.dark-mode .news-card {
+            background: #1d1d1d !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+        }
+
+        html.dark-mode .floating-icon {
+            background-color: #1d1d1d !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
+        }
+
+        html.dark-mode .news-card h3 {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .news-date {
+            color: #c4c4c4 !important;
+        }
+
+        html.dark-mode .news-text {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode .btn-more {
+            background-color: var(--laranja-action) !important;
+            color: white !important;
+        }
+
+        html.dark-mode .btn-more:hover {
+            background-color: #e66a1f !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="display: flex; align-items: center; gap: 40px;">
+            <a href="main.html" style="text-decoration: none;">
+                <div style="width: 40px; height: 40px; background: var(--verde-soja); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div>
+            </a>
+            <nav>
+                <a href="saiba_mais.html">Saiba mais</a>
+                <a href="credito.html">Créditos</a>
+                <a href="#">Planos</a>
+                <a href="novidades.html" class="active">Novidades</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Novidades</h1>
+        <p class="subtitle">Últimas Atualizações</p>
+        <div class="title-underline"></div>
+
+        <section class="news-grid">
+            <div class="news-card">
+                <div class="floating-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Melhoria na IA de Solo</h3>
+                <span class="news-date">15 de Outubro, 2024</span>
+                <p class="news-text">Implementamos um novo algoritmo de análise preditiva que aumenta a precisão da umidade em 25%. Agora as caixas são largas e o conteúdo respira melhor.</p>
+                <button class="btn-more">Saiba mais</button>
+            </div>
+
+            <div class="news-card">
+                <div class="floating-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Novo Painel de Clima</h3>
+                <span class="news-date">10 de Outubro, 2024</span>
+                <p class="news-text">O novo dashboard permite visualizar a previsão do tempo diretamente no mapa da sua fazenda com dados em tempo real via satélite.</p>
+                <button class="btn-more">Saiba mais</button>
+            </div>
+
+            <div class="news-card">
+                <div class="floating-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Integração com Drones</h3>
+                <span class="news-date">01 de Outubro, 2024</span>
+                <p class="news-text">Agora você pode importar dados de mapeamento RGB e NDVI diretamente dos drones da linha DJI para processamento na Soja IA.</p>
+                <button class="btn-more">Saiba mais</button>
+            </div>
+
+            <div class="news-card">
+                <div class="floating-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Relatórios em PDF</h3>
+                <span class="news-date">25 de Setembro, 2024</span>
+                <p class="news-text">Exporte análises completas da sua safra em documentos profissionais com apenas um clique para compartilhar com sua equipe.</p>
+                <button class="btn-more">Saiba mais</button>
+            </div>
+
+            <div class="news-card">
+                <div class="floating-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Otimização de Performance</h3>
+                <span class="news-date">15 de Setembro, 2024</span>
+                <p class="news-text">O carregamento dos mapas foi otimizado para conexões rurais lentas, garantindo que você tenha acesso aos dados mesmo no campo.</p>
+                <button class="btn-more">Saiba mais</button>
+            </div>
+
+            <div class="news-card">
+                <div class="floating-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3>Suporte Offline</h3>
+                <span class="news-date">05 de Setembro, 2024</span>
+                <p class="news-text">Agora é possível realizar anotações em campo sem internet. Os dados serão sincronizados automaticamente assim que você se conectar.</p>
+                <button class="btn-more">Saiba mais</button>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
