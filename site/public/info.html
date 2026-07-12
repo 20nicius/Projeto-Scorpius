@@ -53,7 +53,9 @@
             color: var(--verde-soja);
         }
 
-        .logo-header span { color: var(--laranja-action); }
+        .brand img {
+            width: 55px;
+        }
 
         .tabs-container {
             display: flex;
@@ -499,7 +501,9 @@
 
     <!-- HEADER COM ABAS -->
     <div class="header">
-        <div class="logo-header">Soja <span>IA</span></div>
+        <div class="logo-header">
+            <a href="/" class="brand"><img src="imagem.png"></a>
+        </div>
         <div class="tabs-container">
             <button class="tab-btn active" data-tab="mapa-tab">
                 <i class="fas fa-map"></i> Mapa
@@ -587,7 +591,7 @@
         <!-- ABA TABELA (ESTILO record.html) -->
         <div id="tabela-tab" class="tab-content">
             <div class="table-scroll">
-                <table id="tabelaLeituras">
+                <table id="tabelaLeituras" style="zoom: 0.4;">
                     <thead>
                         <tr>
                             <th>Horário</th>

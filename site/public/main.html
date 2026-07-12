@@ -36,32 +36,28 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
-        body { background-color: #ffffff; color: #333; line-height: 1.6; }
+        body {
+            background-color: #ffffff; 
+            color: #333;
+            line-height: 1.6;
+            width: 100%;
+            min-height: 100vh;
+        }
 
 
 
         /* HEADER COM SOMBRA NA DIVISÃO */
 
         header {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
-            padding: 20px 8%;
-
+            padding: 15px 8%; /* Altura fixa e segura em pixels para o topo e base */
             background: #fff;
-
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
-
             position: sticky;
-
             top: 0;
-
             z-index: 1000;
-
         }
 
 
@@ -70,21 +66,26 @@
 
         
 
-        .brand { display: flex; align-items: center; gap: 15px; text-decoration: none; color: inherit; }
-
-        .logo-mark {
-
-            width: 38px; height: 38px;
-
-            background-color: var(--verde-soja);
-
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            flex-direction: column;
+            gap: 5px;
+            text-decoration: none;
+            color: inherit;
+            width: min-content;
         }
+    
+        .brand img { width: 120%; height: 60%; }
+    
 
-        .brand-text { font-size: 14px; font-weight: 800; line-height: 1.1; color: #334155; }
-
-
+        .brand div {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #334155;
+            white-space: nowrap;
+        }
 
         /* Estilização dos Links de Navegação */
 
@@ -96,7 +97,7 @@
 
             color: #94a3b8; 
 
-            font-weight: 500; 
+            font-weight: 800; 
 
             text-decoration: none;
 
@@ -112,38 +113,20 @@
 
         .auth-group { display: flex; gap: 15px; }
 
-        
-
-        /* Ajuste para botões que são links */
-
         .btn {
-
-            padding: 12px 25px; 
-
-            border-radius: 10px; 
-
-            font-weight: 800;
-
-            font-size: 14px; 
-
+            padding: 10px 22px; /* Mudado de % para px para manter o tamanho firme no PC */
+            border-radius: 8px; 
+            font-weight: 700;
+            font-size: 14px; /* Aumentado levemente para melhor leitura no PC */
             cursor: pointer; 
-
             display: flex; 
-
             align-items: center; 
-
             gap: 10px; 
-
             transition: 0.3s;
-
             text-decoration: none;
-
             border: none;
-
             text-align: center;
-
             justify-content: center;
-
         }
 
         
@@ -256,6 +239,38 @@
 
 
 
+        /* Customização para todos os cards possuírem conteúdo de texto verticalizado */
+
+        .card-content-layout {
+
+            flex-direction: column;
+
+            align-items: center;
+
+            padding: 40px 20px 20px 20px !important;
+
+            text-align: center;
+
+        }
+
+        .card-body-text {
+
+            margin-top: 25px;
+
+        }
+
+        .card-body-text p {
+
+            font-size: 15px;
+
+            color: #64748b;
+
+            line-height: 1.6;
+
+        }
+
+
+
         /* HARDWARE SECTION */
 
         .hardware-section {
@@ -301,6 +316,8 @@
         .hw-content { width: 62%; background: white; padding: 40px; display: flex; align-items: center; }
 
         .hw-placeholder-text { width: 100%; height: 20px; background: #f0f0f0; border-radius: 10px; }
+
+        
 
         /* POPUP DROPDOWN */
         .user-popup {
@@ -448,7 +465,9 @@
 
                 width: 100%;
 
-                height: 250px; /* Reduz a altura já que vão ficar empilhados */
+                height: auto; /* Permite que o card cresça conforme o texto no celular */
+
+                min-height: 220px;
 
             }
 
@@ -563,6 +582,10 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
         }
 
+        html.dark-mode .card-body-text p {
+            color: #aaaaaa !important;
+        }
+
         html.dark-mode .hardware-card {
             background: #1d1d1d !important;
             border-color: var(--verde-soja) !important;
@@ -607,27 +630,28 @@
 
         <div class="header-left">
 
-            <a href="main.html" class="brand">
-
-                <div class="logo-mark"></div>
-
-                <div class="brand-text">SOJA <br> IA</div>
+            <a href="/" class="brand">
+                
+                <img src="imagem.png">
+                
+                <div>scorpii V1</div>
+                
 
             </a>
 
-            <nav>
-
-                <a href="saiba_mais.html">Saiba mais</a>
-
-                <a href="credito.html">Créditos</a>
-
-                <a href="#">Planos</a>
-
-                <a href="novidades.html">Novidades</a>
-
-            </nav>
-
         </div>
+        
+        <nav>
+
+            <a href="saiba_mais.html">Saiba mais</a>
+
+            <a href="credito.html">Créditos</a>
+
+            <a href="#">Planos</a>
+
+            <a href="novidades.html">Novidades</a>
+
+        </nav>
 
         <div class="auth-group">
 
@@ -664,21 +688,39 @@
 
         <div class="icon-section">
 
-            <div class="card-rect">
+            <div class="card-rect card-content-layout">
 
-                <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m12 8-4 4 4 4M16 12H8"/></svg>
+                <div class="card-header-icon">
+                    <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m12 8-4 4 4 4M16 12H8"/></svg>
+                </div>
+
+                <div class="card-body-text">
+                    <p>Envio de dados rápido e preciso, o projeto colhe os dados diariamente e os disponibiliza de forma fracionada, garantindo assim uma corrente de informações consistente.</p>
+                </div>
 
             </div>
 
-            <div class="card-rect">
+            <div class="card-rect card-content-layout">
 
-                <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <div class="card-header-icon">
+                    <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+
+                <div class="card-body-text">
+                    <p>A instalação de uma unidade pode salvar uma lavoura inteira, diminuindo assim os prejuízos.</p>
+                </div>
 
             </div>
 
-            <div class="card-rect">
+            <div class="card-rect card-content-layout">
 
-                <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a5.5 5.5 0 0 0 0-11h-1.5a7 7 0 1 0-13.5 3h-.5a4 4 0 0 0 0 8h15.5Z"/></svg>
+                <div class="card-header-icon">
+                    <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a5.5 5.5 0 0 0 0-11h-1.5a7 7 0 1 0-13.5 3h-.5a4 4 0 0 0 0 8h15.5Z"/></svg>
+                </div>
+
+                <div class="card-body-text">
+                    <p>Acesso aos dados a qualquer hora ou lugar, garantindo um monitoramento preciso e 24h.</p>
+                </div>
 
             </div>
 

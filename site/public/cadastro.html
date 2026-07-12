@@ -19,21 +19,27 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
-            height: 100vh;
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: var(--bg-gradiente);
+            padding: 20px;
         }
 
         .register-card {
             background: white;
+            height: 70%;
+            min-height: 640px;
             width: 100%;
-            max-width: 450px;
-            padding: 50px 40px;
+            max-width: 700px;
+            padding: 15% 10%;
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.1);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
         }
 
         .brand {
@@ -41,21 +47,16 @@
             justify-content: center;
             align-items: center;
             gap: 12px;
-            margin-bottom: 30px;
             text-decoration: none;
         }
 
-        .logo-icon {
-            width: 45px; height: 45px;
-            background-color: var(--verde-soja);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: flex; justify-content: center; align-items: center;
-            color: white;
+        .brand img {
+            width: 50%; height: 100%;
         }
 
         .brand span { font-size: 28px; font-weight: 500; color: #333; }
 
-        h2 { color: var(--verde-soja); font-size: 32px; font-weight: 800; margin-bottom: 35px; }
+        h2 { color: var(--verde-soja); font-size: 32px; font-weight: 800; padding: 6% }
 
         .input-group { position: relative; margin-bottom: 18px; }
 
@@ -108,7 +109,7 @@
         .btn-register:disabled { background-color: #ccc; cursor: not-allowed; }
         .btn-register:hover:not(:disabled) { background-color: #e66a1f; transform: scale(1.02); }
 
-        .footer-text { margin-top: 25px; font-size: 14px; font-weight: 600; color: #333; }
+        .footer-text { margin-top: 25px; font-size: 15.5px; font-weight: 600; color: #333; }
         .footer-text a { color: var(--verde-soja); text-decoration: none; font-weight: 700; transition: 0.2s; }
         .footer-text a:hover { text-decoration: underline; }
 
@@ -180,8 +181,7 @@
 
     <div class="register-card">
         <a href="/" class="brand">
-            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
-            <span>Soja IA</span>
+            <img src="imagem.png">
         </a>
 
         <h2>Cadastrar-se</h2>

@@ -22,49 +22,91 @@
             background-color: var(--bg-site); 
             color: #333; 
             line-height: 1.6;
-            min-height: 100vh;
+            min-height: 100dvh;
         }
 
         /* HEADER COM SOMBRA ADICIONADA */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 10%;
-            background: #fff;
-            border-bottom: 1px solid #eee;
-            /* Aplicação da sombra para destaque */
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
-            position: sticky; /* Opcional: mantém o header no topo ao rolar */
-            top: 0;
-            z-index: 1000;
-        }
+header {
+    display: flex;
+    justify-content: space-between; /* Empurra a logo para a esquerda e o menu para a direita */
+    align-items: center;
+    padding: 15px 4%; /* Padding vertical fixo (15px) e lateral fluido (4%) */
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    position: sticky; /* Opcional: mantive aqui caso queira ativar */
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
 
-        .header-left { display: flex; align-items: center; gap: 50px; }
-        
-        .logo-mark {
-            width: 42px; 
-            height: 42px;
-            background-color: var(--verde-soja);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        }
+/* CONTAINER DA LOGO */
+.logo { 
+    display: flex; 
+    align-items: center; 
+    max-width: 180px; /* Define um tamanho máximo ideal para computador */
+    width: 10%;       /* Permite encolher proporcionalmente em telas pequenas */
+    min-width: 110px; /* Garante que ela nunca fique minúscula no celular */
+}
 
-        nav { display: flex; gap: 40px; }
-        
-        nav a { 
-            font-size: 18px; 
-            color: #999; 
-            font-weight: 500; 
-            cursor: pointer; 
-            transition: 0.3s;
-            text-decoration: none;
-        }
-        nav a:hover { color: var(--verde-soja); }
-        nav a.active { 
-            color: var(--verde-soja); 
-            border-bottom: 3px solid var(--verde-soja); 
-            padding-bottom: 2px;
-        }
+.logo img { 
+    width: 100%; 
+    height: auto;     /* Mantém a proporção correta da imagem sem achatá-la */
+    object-fit: contain;
+}
+
+/* MENU DE NAVEGAÇÃO */
+nav { 
+    display: flex; 
+    gap: 20px;        /* Espaço fixo e seguro entre os links (não deforma) */
+    align-items: center; 
+    justify-content: flex-end; 
+    flex-wrap: wrap;  /* Se o espaço acabar no celular, os links vão para baixo organizadamente */
+}
+
+nav a { 
+    font-size: 20px;  /* Tamanho de fonte fixo e legível tanto em desktop quanto mobile */
+    color: #999; 
+    font-weight: 500; 
+    text-decoration: none;
+    cursor: pointer; 
+    transition: 0.3s; 
+    padding: 5px 8px; /* Cria uma área de clique confortável */
+    white-space: nowrap; /* Impede os textos do menu de quebrarem em duas linhas */
+}
+
+nav a:hover { 
+    color: var(--verde-soja); 
+}
+
+nav a.active { 
+    color: var(--verde-soja); 
+    border-bottom: 3px solid var(--verde-soja); 
+}
+
+/* AJUSTE EXCLUSIVO PARA TELAS PEQUENAS (CELULARES) */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column; /* Coloca a logo em cima e o menu embaixo */
+        gap: 12px;              /* Espaço entre a logo e o menu */
+        padding: 12px 20px;
+        text-align: center;
+    }
+    
+    .logo {
+        width: 110px;           /* Tamanho fixo e ideal para a logo no celular */
+        justify-content: center;
+    }
+
+    nav {
+        justify-content: center; /* Centraliza os links no mobile */
+        gap: 10px;               /* Diminui levemente o espaço entre links no celular */
+        width: 100%;
+    }
+    
+    nav a {
+        font-size: 14px;         /* Ajuste sutil na fonte para telas pequenas */
+    }
+}
 
         .container {
             width: 90%;
@@ -79,6 +121,11 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-decoration: underline;
+            text-decoration-color: var(--laranja-action);
+            text-decoration-thickness: 6px;
+            text-underline-offset: 4px;
+            text-align: center;
         }
 
         .title-underline {
@@ -123,7 +170,7 @@
 
         .tech-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
         }
 
@@ -165,7 +212,7 @@
 
         @media (max-width: 1400px) {
             .team-grid { grid-template-columns: repeat(2, 1fr); }
-            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+            .tech-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
         }
 
         /* DARK MODE STYLES */
@@ -230,22 +277,19 @@
 <body>
 
     <header>
-        <div class="header-left">
-            <a href="main.html" class="brand">
-                <div class="logo-mark"></div>
-            </a>
+        <a href="/" title="Voltar para Home" class="logo">
+            <img src="imagem.png">
+        </a>
             <nav>
                 <a href="saiba_mais.html">Saiba mais</a>
                 <a href="credito.html" class="active">Créditos</a>
                 <a href="#">Planos</a>
                 <a href="novidades.html">Novidades</a>
             </nav>
-        </div>
     </header>
 
     <main class="container">
         <h1>Créditos</h1>
-        <div class="title-underline"></div>
 
         <section>
             <h2>Equipe</h2>

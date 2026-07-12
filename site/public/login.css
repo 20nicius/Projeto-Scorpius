@@ -13,7 +13,7 @@
 }
 
 body {
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,12 +23,17 @@ body {
 
 .login-card {
     background: white;
+    height: 70%;
+    min-height: 640px;
     width: 100%;
-    max-width: 450px;
-    padding: 50px 45px;
+    max-width: 700px;
+    padding: 15% 10%;
     border-radius: 30px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .brand {
@@ -36,20 +41,12 @@ body {
     justify-content: center;
     align-items: center;
     gap: 12px;
-    margin-bottom: 30px;
-    text-decoration: none;
     transition: 0.3s;
 }
 
-    .brand:hover {
-        opacity: 0.8;
-    }
-
-.icon-container img {
-    width: 100%;
+.brand img {
+    width: 50%;
     height: 100%;
-    object-fit: contain;
-    padding: 10px;
 }
 
 .brand span {
@@ -58,22 +55,12 @@ body {
     color: #333;
 }
 
-.logo {
-    font-size: 35px;
-    font-weight: 800;
-    color: var(--verde-soja);
-    margin-bottom: 5px;
-}
-
-    .logo span {
-        color: var(--laranja-action);
+    p {
+        color: var(--verde-soja);
+        font-size: 26px;
+        font-weight: 800;
+        padding: 6%
     }
-
-p {
-    color: #666;
-    margin-bottom: 30px;
-    font-size: 16px;
-}
 
 .input-group {
     margin-bottom: 20px;
@@ -138,8 +125,8 @@ p {
 
 .footer-text {
     margin-top: 30px;
-    font-size: 14px;
-    color: #777;
+    font-size: 15.5px;
+    color: #333;
 }
 
     .footer-text a {
@@ -204,14 +191,6 @@ html.dark-mode body {
 html.dark-mode .login-card {
     background: #1d1d1d !important;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
-}
-
-html.dark-mode .logo {
-    color: var(--verde-soja) !important;
-}
-
-html.dark-mode .logo span {
-    color: var(--laranja-action) !important;
 }
 
 html.dark-mode p {

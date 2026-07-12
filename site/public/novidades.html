@@ -24,43 +24,87 @@
         }
 
         /* HEADER COM SOMBRA E NAVEGAÇÃO FUNCIONAL */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 5%;
-            background: #fff;
-            /* Sombra na divisão adicionada */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+header {
+    display: flex;
+    justify-content: space-between; /* Empurra a logo para a esquerda e o menu para a direita */
+    align-items: center;
+    padding: 15px 4%; /* Padding vertical fixo (15px) e lateral fluido (4%) */
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    position: sticky; /* Opcional: mantive aqui caso queira ativar */
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
 
-        /* Ajustes no Nav para suportar as tags <a> */
-        header nav {
-            display: flex; 
-            gap: 30px; 
-            color: #999; 
-            font-weight: 500;
-        }
+/* CONTAINER DA LOGO */
+.logo { 
+    display: flex; 
+    align-items: center; 
+    max-width: 180px; /* Define um tamanho máximo ideal para computador */
+    width: 10%;       /* Permite encolher proporcionalmente em telas pequenas */
+    min-width: 110px; /* Garante que ela nunca fique minúscula no celular */
+}
 
-        header nav a {
-            color: #999;
-            text-decoration: none;
-            transition: 0.3s;
-            cursor: pointer;
-            padding-bottom: 5px;
-        }
+.logo img { 
+    width: 100%; 
+    height: auto;     /* Mantém a proporção correta da imagem sem achatá-la */
+    object-fit: contain;
+}
 
-        header nav a:hover {
-            color: var(--verde-soja);
-        }
+/* MENU DE NAVEGAÇÃO */
+nav { 
+    display: flex; 
+    gap: 20px;        /* Espaço fixo e seguro entre os links (não deforma) */
+    align-items: center; 
+    justify-content: flex-end; 
+    flex-wrap: wrap;  /* Se o espaço acabar no celular, os links vão para baixo organizadamente */
+}
 
-        header nav a.active {
-            color: var(--verde-soja); 
-            border-bottom: 3px solid var(--verde-soja);
-        }
+nav a { 
+    font-size: 20px;  /* Tamanho de fonte fixo e legível tanto em desktop quanto mobile */
+    color: #999; 
+    font-weight: 500; 
+    text-decoration: none;
+    cursor: pointer; 
+    transition: 0.3s; 
+    padding: 5px 8px; /* Cria uma área de clique confortável */
+    white-space: nowrap; /* Impede os textos do menu de quebrarem em duas linhas */
+}
+
+nav a:hover { 
+    color: var(--verde-soja); 
+}
+
+nav a.active { 
+    color: var(--verde-soja); 
+    border-bottom: 3px solid var(--verde-soja); 
+}
+
+/* AJUSTE EXCLUSIVO PARA TELAS PEQUENAS (CELULARES) */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column; /* Coloca a logo em cima e o menu embaixo */
+        gap: 12px;              /* Espaço entre a logo e o menu */
+        padding: 12px 20px;
+        text-align: center;
+    }
+    
+    .logo {
+        width: 110px;           /* Tamanho fixo e ideal para a logo no celular */
+        justify-content: center;
+    }
+
+    nav {
+        justify-content: center; /* Centraliza os links no mobile */
+        gap: 10px;               /* Diminui levemente o espaço entre links no celular */
+        width: 100%;
+    }
+    
+    nav a {
+        font-size: 14px;         /* Ajuste sutil na fonte para telas pequenas */
+    }
+}
 
         .container {
             width: 90%; 
@@ -231,17 +275,15 @@
 <body>
 
     <header>
-        <div style="display: flex; align-items: center; gap: 40px;">
-            <a href="main.html" style="text-decoration: none;">
-                <div style="width: 40px; height: 40px; background: var(--verde-soja); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div>
-            </a>
+        <a href="/" title="Voltar para Home" class="logo">
+            <img src="imagem.png">
+        </a>
             <nav>
                 <a href="saiba_mais.html">Saiba mais</a>
                 <a href="credito.html">Créditos</a>
                 <a href="#">Planos</a>
                 <a href="novidades.html" class="active">Novidades</a>
             </nav>
-        </div>
     </header>
 
     <main class="container">
@@ -254,9 +296,10 @@
                 <div class="floating-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
-                <h3>Melhoria na IA de Solo</h3>
+                <h3>Adição de uma IA para análise de saúde da lavoura</h3>
                 <span class="news-date">15 de Outubro, 2024</span>
-                <p class="news-text">Implementamos um novo algoritmo de análise preditiva que aumenta a precisão da umidade em 25%. Agora as caixas são largas e o conteúdo respira melhor.</p>
+                <p class="news-text">Implementamos uma IA treinada capaz de analisar fotos e dados coletados pela nossa unidade e então entregar relatórios precisos ao agricultor.
+</p>
                 <button class="btn-more">Saiba mais</button>
             </div>
 
@@ -264,9 +307,9 @@
                 <div class="floating-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
-                <h3>Novo Painel de Clima</h3>
+                <h3>Novo mapa via satélite</h3>
                 <span class="news-date">10 de Outubro, 2024</span>
-                <p class="news-text">O novo dashboard permite visualizar a previsão do tempo diretamente no mapa da sua fazenda com dados em tempo real via satélite.</p>
+                <p class="news-text">Maior estabilidade no mapa e também a possibilidade de comandar os trajetos da unidade por meio de linhas pontilhadas.</p>
                 <button class="btn-more">Saiba mais</button>
             </div>
 
@@ -274,9 +317,9 @@
                 <div class="floating-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
-                <h3>Integração com Drones</h3>
+                <h3>Conexão entre unidades</h3>
                 <span class="news-date">01 de Outubro, 2024</span>
-                <p class="news-text">Agora você pode importar dados de mapeamento RGB e NDVI diretamente dos drones da linha DJI para processamento na Soja IA.</p>
+                <p class="news-text">Conexão entre unidades para criar um efeito “enxame” , fazendo assim que as unidades trabalhem em grupo para uma melhor precisão e velocidade de entrega de dados.</p>
                 <button class="btn-more">Saiba mais</button>
             </div>
 

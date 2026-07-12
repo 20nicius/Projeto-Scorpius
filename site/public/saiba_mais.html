@@ -21,48 +21,95 @@
         body { 
             background-color: var(--bg-site); 
             color: #333; 
-            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
         }
 
         /* HEADER CONSISTENTE */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 8%;
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .header-left { display: flex; align-items: center; gap: 50px; }
-        
-        .logo-mark {
-            width: 42px; height: 42px;
-            background-color: var(--verde-soja);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: block;
-        }
+/* HEADER CONSISTENTE E EXPANSIVO */
+header {
+    display: flex;
+    justify-content: space-between; /* Empurra a logo para a esquerda e o menu para a direita */
+    align-items: center;
+    padding: 15px 4%; /* Padding vertical fixo (15px) e lateral fluido (4%) */
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    position: sticky; /* Opcional: mantive aqui caso queira ativar */
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
 
-        nav { display: flex; gap: 40px; }
-        nav a { 
-            font-size: 18px; 
-            color: #999; 
-            font-weight: 500; 
-            text-decoration: none;
-            cursor: pointer; 
-            transition: 0.3s; 
-            padding-bottom: 5px;
-        }
-        nav a:hover { color: var(--verde-soja); }
-        
-        nav a.active { 
-            color: var(--verde-soja); 
-            border-bottom: 3px solid var(--verde-soja); 
-        }
+/* CONTAINER DA LOGO */
+.logo { 
+    display: flex; 
+    align-items: center; 
+    max-width: 180px; /* Define um tamanho máximo ideal para computador */
+    width: 10%;       /* Permite encolher proporcionalmente em telas pequenas */
+    min-width: 110px; /* Garante que ela nunca fique minúscula no celular */
+}
+
+.logo img { 
+    width: 100%; 
+    height: auto;     /* Mantém a proporção correta da imagem sem achatá-la */
+    object-fit: contain;
+}
+
+/* MENU DE NAVEGAÇÃO */
+nav { 
+    display: flex; 
+    gap: 20px;        /* Espaço fixo e seguro entre os links (não deforma) */
+    align-items: center; 
+    justify-content: flex-end; 
+    flex-wrap: wrap;  /* Se o espaço acabar no celular, os links vão para baixo organizadamente */
+}
+
+nav a { 
+    font-size: 20px;  /* Tamanho de fonte fixo e legível tanto em desktop quanto mobile */
+    color: #999; 
+    font-weight: 500; 
+    text-decoration: none;
+    cursor: pointer; 
+    transition: 0.3s; 
+    padding: 5px 8px; /* Cria uma área de clique confortável */
+    white-space: nowrap; /* Impede os textos do menu de quebrarem em duas linhas */
+}
+
+nav a:hover { 
+    color: var(--verde-soja); 
+}
+
+nav a.active { 
+    color: var(--verde-soja); 
+    border-bottom: 3px solid var(--verde-soja); 
+}
+
+/* AJUSTE EXCLUSIVO PARA TELAS PEQUENAS (CELULARES) */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column; /* Coloca a logo em cima e o menu embaixo */
+        gap: 12px;              /* Espaço entre a logo e o menu */
+        padding: 12px 20px;
+        text-align: center;
+    }
+    
+    .logo {
+        width: 110px;           /* Tamanho fixo e ideal para a logo no celular */
+        justify-content: center;
+    }
+
+    nav {
+        justify-content: center; /* Centraliza os links no mobile */
+        gap: 10px;               /* Diminui levemente o espaço entre links no celular */
+        width: 100%;
+    }
+    
+    nav a {
+        font-size: 14px;         /* Ajuste sutil na fonte para telas pequenas */
+    }
+}
+
 
         /* CONTAINER PRINCIPAL */
         .container {
@@ -78,21 +125,28 @@
             font-size: 58px;
             font-weight: 800;
             text-transform: uppercase;
+            text-decoration: underline;
+            text-decoration-color: var(--laranja-action);
+            text-decoration-thickness: 6px;
+            text-underline-offset: 4px; /* Distância do texto */
+            text-align: center;
         }
 
-        .title-underline {
+        /*.title-underline {
             width: 320px;
             height: 6px;
             background-color: var(--laranja-action);
             margin: 10px 0 60px 0;
-        }
+        }*/
 
         /* CARDS VERTICAIS */
         .cards-section {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            grid-auto-flow: row;
             gap: 40px;
             margin-bottom: 80px;
+            overflow-y: auto;
         }
 
         .vertical-card {
@@ -125,7 +179,7 @@
 
         /* SEÇÃO FAQ (CANTO INFERIOR) */
         .faq-box {
-            width: 400px;
+            width: 100%;
             background: white;
             padding: 35px;
             border-radius: 25px;
@@ -226,19 +280,16 @@
     </style>
 </head>
 <body>
-
     <header>
-        <div class="header-left">
-            <a href="main.html" title="Voltar para Home">
-                <div class="logo-mark"></div>
-            </a>
-            <nav>
-                <a href="saiba_mais.html" class="active">Saiba mais</a>
-                <a href="credito.html">Créditos</a>
-                <a href="#">Planos</a>
-                <a href="novidades.html">Novidades</a>
-            </nav>
-        </div>
+        <a href="/" title="Voltar para Home" class="logo">
+            <img src="imagem.png">
+        </a>
+        <nav>
+            <a href="saiba_mais.html" class="active">Saiba mais</a>
+            <a href="credito.html">Créditos</a>
+            <a href="#">Planos</a>
+            <a href="novidades.html">Novidades</a>
+        </nav>
     </header>
 
     <main class="container">
@@ -251,6 +302,8 @@
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="12" r="3"/>
                 </svg>
                 <h3>Nossa Tecnologia</h3>
+<p>Criamos uma plataforma que utiliza mapas interativos para acompanhar a trajetória da unidade em campo. Essa ferramenta permite visualizar rotas, registrar percursos e organizar informações de forma simples e prática.</p>
+
             </div>
 
             <div class="vertical-card">
@@ -258,6 +311,7 @@
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
                 <h3>Nossa Equipe</h3>
+<p>Somos alunos do 3º  Ano C (EM) do Colégio Estadual Cívico Militar do Paraná Dr. Generoso Marques, com o interesse em aplicar tecnologia ao setor agrícola. Cada integrante contribui com dedicação e criatividade para transformar o aprendizado em soluções reais e acessíveis. </p>
             </div>
 
             <div class="vertical-card">
@@ -265,6 +319,7 @@
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
                 </svg>
                 <h3>Nosso Objetivo</h3>
+<p>Nosso propósito é facilitar o monitoramento das atividades agrícolas, tornando o acesso a informações de campo mais fácil. Queremos apoiar produtores e estudantes na tomada de decisões rápidas e seguras no campo. </p>
             </div>
         </section>
 
