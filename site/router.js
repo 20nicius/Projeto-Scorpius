@@ -8,6 +8,8 @@ const crypto = require("crypto");
 const tf = require("@tensorflow/tfjs");
 const sharp = require("sharp");
 const fs = require("fs");
+const bodyParser = require('body-parser');
+const binarioBodyParser = bodyParser.raw({ type: 'image/jpeg', limit: '10mb' });
 const { getDatabase, saveDatabase } = require("./database");
 
 const router = express.Router();
@@ -19,9 +21,6 @@ let classNames = [];
 
 // Executa a inicialização da IA em segundo plano
 loadModelIA();
-
-// Middleware para processar requisições com corpo binário puro (Buffer de imagem JPEG)
-const binarioBodyParser = express.raw({ type: 'image/jpeg', limit: '2mb' }); //
 
 
 // --- CONFIGURAÇÃO DE LIMITADORES (RATE LIMIT) ---
@@ -619,7 +618,7 @@ router.get("/api/minhas-areas", verificarToken, (req, res) => {
             coordenadas: JSON.parse(v[2]) 
         }));
 
-        console.log("Áreas enviadas para o front:", areas); 
+        // console.log("Áreas enviadas para o front:", areas); 
         res.json(areas);
     } catch (err) {
         console.error("Erro no SELECT:", err);
@@ -630,37 +629,57 @@ router.get("/api/minhas-areas", verificarToken, (req, res) => {
 // --- ROTA DE HISTÓRICO DE FOTOS (CORRIGIDA) ---
 router.get("/api/historico-fotos", verificarToken, (req, res) => {
     const email = req.userEmail;
+    const grupoFiltro = req.query.grupo; // ◄ Captura o filtro enviado (?grupo=Nome)
     const db = getDatabase();
+    
     try {
-        // CORREÇÃO CRÍTICA: O WHERE vem antes do ORDER BY. 
-        // Os parâmetros [email] agora estão fora das crases do SQL de forma limpa.
-        const result = db.exec(
-            `SELECT id, device_id, rota, local, observacao_texto, foto, criado_em 
-             FROM registros_dispositivo 
-             WHERE user_email = ?
-             ORDER BY criado_em DESC`, 
-            [email]
-        );
+        let query = `SELECT id, device_id, rota, local, observacao_texto, foto, criado_em 
+                     FROM registros_dispositivo 
+                     WHERE user_email = $email`;
+        
+        // Objeto de parâmetros mapeados para o SQL
+        const params = { '$email': email };
 
-        if (result.length === 0 || !result[0].values) {
-            return res.json([]); // Retorna lista vazia se não houver registros
+        // Se o frontend pediu um grupo específico, injetamos dinamicamente
+        if (grupoFiltro) {
+            query += ` AND rota = $rota`;
+            params['$rota'] = grupoFiltro;
         }
 
-        const colunas = result[0].columns;
-        const linhas = result[0].values;
+        query += ` ORDER BY criado_em DESC`;
 
-        // Mapeia as linhas transformando o Buffer do BLOB em String Base64
-        const listaFotos = linhas.map(linha => {
-            const registro = {};
-            colunas.forEach((col, index) => {
-                if (col === 'foto' && linha[index]) {
-                    // O pacote sql.js retorna Uint8Array para campos BLOB. Convertemos para NodeJS Buffer e depois Base64.
-                    const buffer = Buffer.from(linha[index]);
-                    registro[col] = `data:image/jpeg;base64,${buffer.toString('base64')}`;
-                } else {
-                    registro[col] = Math.round(linha[index]) === linha[index] ? parseInt(linha[index]) : linha[index];
+        // Preparar a declaração de forma segura contra SQL Injection para sql.js
+        const stmt = db.prepare(query);
+        const result = [];
+        
+        // Executa passando os parâmetros mapeados
+        stmt.bind(params);
+        while(stmt.step()) {
+            result.push(stmt.getAsObject());
+        }
+        stmt.free(); // Libera a memória do statement
+
+        // Se o array veio vazio
+        if (result.length === 0) {
+            return res.json([]); 
+        }
+
+        // Mapeia os registros convertendo o BLOB da foto para Base64
+        const listaFotos = result.map(linha => {
+            const registro = { ...linha };
+            
+            if (registro.foto) {
+                // Converte o buffer/Uint8Array do banco para Base64
+                const buffer = Buffer.from(registro.foto);
+                registro.foto = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+            }
+            
+            // Corrige valores numéricos se necessário
+            for (let col in registro) {
+                if (col !== 'foto' && typeof registro[col] === 'number' && Math.round(registro[col]) === registro[col]) {
+                    registro[col] = parseInt(registro[col]);
                 }
-            });
+            }
             return registro;
         });
 
@@ -691,7 +710,7 @@ router.get("/api/devices", verificarToken, (req, res) => {
             rota: row[1]
         }));
 
-        res.json(devices);
+        res.json({ devices: devices });
     } catch (e) {
         console.error(e);
         res.status(500).json({ erro: "Erro ao buscar dispositivos." });
@@ -750,6 +769,8 @@ router.post("/api/iot/dados", async (req, res) => {
         rain,
         timestamp 
     } = req.body;
+    
+    //console.log(`[HTTP]Requisição: ${req.body}`);
 
     const db = getDatabase();
 
@@ -917,48 +938,59 @@ async function loadModelIA() {
 }
 
 router.post("/api/iot/upload", binarioBodyParser, async (req, res) => {
-    const deviceIdHeader = req.headers['x-device-id']; //
-    const grupoLocalHeader = req.headers['x-grupo-local']; //
+    const deviceIdHeader = req.headers['x-device-id'];
+    const grupoLocalHeader = req.headers['x-grupo-local'];
+  
+    //console.log("=== DEBUG UPLOAD ===");
+    //console.log("Content-Type recebido:", req.headers['content-type']);
+    //console.log("Tipo do req.body:", typeof req.body);
+    //console.log("É um Buffer válido?:", Buffer.isBuffer(req.body));
+    //if (req.body) console.log("Conteúdo/Tamanho do body:", req.body.length || Object.keys(req.body));
+    //console.log("====================");
+
 
     if (!deviceIdHeader || !grupoLocalHeader) {
-        return res.status(400).json({ erro: "Headers de identificação ausentes." }); //
+        console.log("Erro dispositivo não encontrado")
+        return res.status(400).json({ erro: "Headers de identificação ausentes." });
     }
 
     if (!req.body || req.body.length === 0) {
-        return res.status(400).json({ erro: "Buffer da foto vazio ou inválido." }); //
+        console.log("Requisição sem foto");
+        return res.status(400).json({ erro: "Buffer da foto vazio ou inválido." });
     }
 
-    const db = getDatabase(); //
+    const db = getDatabase();
+    console.log("Banco iniciado");
 
     try {
         // 1. Buscar o e-mail do proprietário associado ao dispositivo
-        const deviceQuery = db.exec("SELECT user_email FROM IoT WHERE id = ?", [deviceIdHeader]); //
+        const deviceQuery = db.exec("SELECT user_email FROM IoT WHERE id = ?", [deviceIdHeader]);
         
         if (deviceQuery.length === 0 || !deviceQuery[0].values) {
-            return res.status(404).json({ erro: "Dispositivo IoT não cadastrado no sistema." }); //
+            return res.status(404).json({ erro: "Dispositivo IoT não cadastrado no sistema." });
         }
         
         console.log(`IoT ${deviceIdHeader}`);
         
-        const userEmail = deviceQuery[0].values[0][0]; //
+        const userEmail = deviceQuery[0].values[0][0];
 
         // 2. Extração de Metadados do Nome do Arquivo (Data e Localização)
-        let dataFormatadaBanco = new Date().toISOString().slice(0, 19).replace('T', ' '); //
-        let localizacaoGps = "Não informada"; //
+        let dataFormatadaBanco = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        let localizacaoGps = "Não informada";
 
-        const filenameOriginal = req.query.name || ""; //
+        const filenameOriginal = req.query.name || "";
         if (filenameOriginal.length > 0) {
-            const cleanName = filenameOriginal.replace("/fotos/", "").replace(".JPG", "").replace(".jpg", ""); //
-            const partes = cleanName.split("_"); //
+            const cleanName = filenameOriginal.replace("/fotos/", "").replace(".JPG", "").replace(".jpg", "");
+            const partes = cleanName.split("_");
 
-            if (partes.length >= 4) {
-                const dataParte = partes[0]; //
-                const horaParte = partes[1].replace(/-/g, ":"); //
-                dataFormatadaBanco = `${dataParte} ${horaParte}`; //
+            if (partes.length >= 3) {
+                const dataParte = partes[0];
+                const horaParte = partes[1].replace(/-/g, ":");
+                dataFormatadaBanco = `${dataParte} ${horaParte}`;
                 
-                const possivelGps = partes[partes.length - 1]; //
+                const possivelGps = partes[partes.length - 1];
                 if (possivelGps.includes(",")) {
-                    localizacaoGps = possivelGps; //
+                    localizacaoGps = possivelGps;
                 }
             }
         }
@@ -1031,8 +1063,8 @@ router.post("/api/iot/upload", binarioBodyParser, async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Erro crítico na rota de upload de foto:", error); //
-        return res.status(500).json({ erro: "Erro interno ao processar e salvar a foto." }); //
+        console.error("Erro crítico na rota de upload de foto:", error);
+        return res.status(500).json({ erro: "Erro interno ao processar e salvar a foto." });
     }
 });
 
