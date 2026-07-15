@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Saiba Mais (Full HD)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root {
+            --verde-soja: #008b8b;
+            --laranja-action: #ff7f27;
+            --cinza-texto: #666;
+            --bg-site: #fdfdfd;
+            --sombra-card: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-site); 
+            color: #333; 
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER CONSISTENTE */
+/* HEADER CONSISTENTE E EXPANSIVO */
+header {
+    display: flex;
+    justify-content: space-between; /* Empurra a logo para a esquerda e o menu para a direita */
+    align-items: center;
+    padding: 15px 4%; /* Padding vertical fixo (15px) e lateral fluido (4%) */
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    position: sticky; /* Opcional: mantive aqui caso queira ativar */
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+/* CONTAINER DA LOGO */
+.logo { 
+    display: flex; 
+    align-items: center; 
+    max-width: 180px; /* Define um tamanho máximo ideal para computador */
+    width: 10%;       /* Permite encolher proporcionalmente em telas pequenas */
+    min-width: 110px; /* Garante que ela nunca fique minúscula no celular */
+}
+
+.logo img { 
+    width: 100%; 
+    height: auto;     /* Mantém a proporção correta da imagem sem achatá-la */
+    object-fit: contain;
+}
+
+/* MENU DE NAVEGAÇÃO */
+nav { 
+    display: flex; 
+    gap: 20px;        /* Espaço fixo e seguro entre os links (não deforma) */
+    align-items: center; 
+    justify-content: flex-end; 
+    flex-wrap: wrap;  /* Se o espaço acabar no celular, os links vão para baixo organizadamente */
+}
+
+nav a { 
+    font-size: 20px;  /* Tamanho de fonte fixo e legível tanto em desktop quanto mobile */
+    color: #999; 
+    font-weight: 500; 
+    text-decoration: none;
+    cursor: pointer; 
+    transition: 0.3s; 
+    padding: 5px 8px; /* Cria uma área de clique confortável */
+    white-space: nowrap; /* Impede os textos do menu de quebrarem em duas linhas */
+}
+
+nav a:hover { 
+    color: var(--verde-soja); 
+}
+
+nav a.active { 
+    color: var(--verde-soja); 
+    border-bottom: 3px solid var(--verde-soja); 
+}
+
+/* AJUSTE EXCLUSIVO PARA TELAS PEQUENAS (CELULARES) */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column; /* Coloca a logo em cima e o menu embaixo */
+        gap: 12px;              /* Espaço entre a logo e o menu */
+        padding: 12px 20px;
+        text-align: center;
+    }
+    
+    .logo {
+        width: 110px;           /* Tamanho fixo e ideal para a logo no celular */
+        justify-content: center;
+    }
+
+    nav {
+        justify-content: center; /* Centraliza os links no mobile */
+        gap: 10px;               /* Diminui levemente o espaço entre links no celular */
+        width: 100%;
+    }
+    
+    nav a {
+        font-size: 14px;         /* Ajuste sutil na fonte para telas pequenas */
+    }
+}
+
+
+        /* CONTAINER PRINCIPAL */
+        .container {
+            width: 90%;
+            max-width: 1700px;
+            margin: 0 auto;
+            padding: 60px 0;
+            flex-grow: 1;
+        }
+
+        h1 {
+            color: var(--verde-soja);
+            font-size: 58px;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-decoration: underline;
+            text-decoration-color: var(--laranja-action);
+            text-decoration-thickness: 6px;
+            text-underline-offset: 4px; /* Distância do texto */
+            text-align: center;
+        }
+
+        /*.title-underline {
+            width: 320px;
+            height: 6px;
+            background-color: var(--laranja-action);
+            margin: 10px 0 60px 0;
+        }*/
+
+        /* CARDS VERTICAIS */
+        .cards-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            grid-auto-flow: row;
+            gap: 40px;
+            margin-bottom: 80px;
+            overflow-y: auto;
+        }
+
+        .vertical-card {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: var(--sombra-card);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 550px; 
+            transition: transform 0.3s ease;
+        }
+
+        .vertical-card:hover { transform: translateY(-10px); }
+
+        .card-icon {
+            width: 100px;
+            height: 100px;
+            color: var(--verde-soja);
+            margin-bottom: 30px;
+        }
+
+        .vertical-card h3 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        /* SEÇÃO FAQ (CANTO INFERIOR) */
+        .faq-box {
+            width: 100%;
+            background: white;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: var(--sombra-card);
+            margin-top: 20px;
+        }
+
+        .faq-box h4 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .faq-item {
+            background: #e0e4e8; 
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .faq-item:hover { background: #d1d5db; }
+
+        .faq-item span { font-weight: 600; color: #555; }
+        .faq-arrow { color: #555; font-weight: bold; }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background-color: #0d1117 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode header {
+            background: #1d1d1d !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        html.dark-mode nav a {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode nav a:hover,
+        html.dark-mode nav a.active {
+            color: var(--verde-soja) !important;
+            border-bottom-color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode h1 {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .title-underline {
+            background-color: var(--laranja-action) !important;
+        }
+
+        html.dark-mode .vertical-card {
+            background: #1d1d1d !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3) !important;
+        }
+
+        html.dark-mode .card-icon {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .vertical-card h3 {
+            color: #cccccc !important;
+        }
+
+        html.dark-mode .faq-box {
+            background: #1d1d1d !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3) !important;
+        }
+
+        html.dark-mode .faq-box h4 {
+            color: #cccccc !important;
+        }
+
+        html.dark-mode .faq-item {
+            background: #2a2a2a !important;
+        }
+
+        html.dark-mode .faq-item:hover {
+            background: #333333 !important;
+        }
+
+        html.dark-mode .faq-item span {
+            color: #aaaaaa !important;
+        }
+
+        html.dark-mode .faq-arrow {
+            color: #aaaaaa !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" title="Voltar para Home" class="logo">
+            <img src="imagem.png">
+        </a>
+        <nav>
+            <a href="saiba_mais.html" class="active">Saiba mais</a>
+            <a href="credito.html">Créditos</a>
+            <a href="#">Planos</a>
+            <a href="novidades.html">Novidades</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Saiba mais sobre nós</h1>
+        <div class="title-underline"></div>
+
+        <section class="cards-section">
+            <div class="vertical-card">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                <h3>Nossa Tecnologia</h3>
+<p>Criamos uma plataforma que utiliza mapas interativos para acompanhar a trajetória da unidade em campo. Essa ferramenta permite visualizar rotas, registrar percursos e organizar informações de forma simples e prática.</p>
+
+            </div>
+
+            <div class="vertical-card">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <h3>Nossa Equipe</h3>
+<p>Somos alunos do 3º  Ano C (EM) do Colégio Estadual Cívico Militar do Paraná Dr. Generoso Marques, com o interesse em aplicar tecnologia ao setor agrícola. Cada integrante contribui com dedicação e criatividade para transformar o aprendizado em soluções reais e acessíveis. </p>
+            </div>
+
+            <div class="vertical-card">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <h3>Nosso Objetivo</h3>
+<p>Nosso propósito é facilitar o monitoramento das atividades agrícolas, tornando o acesso a informações de campo mais fácil. Queremos apoiar produtores e estudantes na tomada de decisões rápidas e seguras no campo. </p>
+            </div>
+        </section>
+
+        <div class="faq-box">
+            <h4>Perguntas frequentes (FAQ)</h4>
+            <div class="faq-item">
+                <span>Como funciona?</span>
+                <span class="faq-arrow">></span>
+            </div>
+            <div class="faq-item">
+                <span>Quais os custos?</span>
+                <span class="faq-arrow">></span>
+            </div>
+            <div class="faq-item">
+                <span>É seguro?</span>
+                <span class="faq-arrow">></span>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

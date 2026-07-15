@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root {
+            --verde-soja: #008b8b;
+            --laranja-action: #ff7f27;
+            --bg-gradiente: radial-gradient(circle, #ffffff 0%, #e0e0e0 100%);
+            --borda-input: #ccc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradiente);
+            padding: 20px;
+        }
+
+        .register-card {
+            background: white;
+            height: 70%;
+            min-height: 640px;
+            width: 100%;
+            max-width: 700px;
+            padding: 15% 10%;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .brand {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand img {
+            width: 50%; height: 100%;
+        }
+
+        .brand span { font-size: 28px; font-weight: 500; color: #333; }
+
+        h2 { color: var(--verde-soja); font-size: 32px; font-weight: 800; padding: 6% }
+
+        .input-group { position: relative; margin-bottom: 18px; }
+
+        .input-group i.main-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 45px 15px 50px;
+            border: 1.5px solid var(--borda-input);
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus { border-color: var(--verde-soja); }
+
+        .toggle-password {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #333;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+        }
+
+        .btn-register {
+            width: 100%;
+            background-color: var(--laranja-action);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn-register:disabled { background-color: #ccc; cursor: not-allowed; }
+        .btn-register:hover:not(:disabled) { background-color: #e66a1f; transform: scale(1.02); }
+
+        .footer-text { margin-top: 25px; font-size: 15.5px; font-weight: 600; color: #333; }
+        .footer-text a { color: var(--verde-soja); text-decoration: none; font-weight: 700; transition: 0.2s; }
+        .footer-text a:hover { text-decoration: underline; }
+
+        #error-msg { color: #d9534f; font-size: 14px; margin-bottom: 15px; display: none; }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%) !important;
+        }
+
+        html.dark-mode .register-card {
+            background: #1d1d1d !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
+        }
+
+        html.dark-mode h2 {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .input-group i.main-icon {
+            color: #666 !important;
+        }
+
+        html.dark-mode .input-group input {
+            background: #0f172a !important;
+            border-color: #333333 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode .input-group input:focus {
+            border-color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .toggle-password {
+            color: #999 !important;
+        }
+
+        html.dark-mode .btn-register {
+            background-color: var(--laranja-action) !important;
+            color: white !important;
+        }
+
+        html.dark-mode .btn-register:hover:not(:disabled) {
+            background-color: #e66a1f !important;
+        }
+
+        html.dark-mode .btn-register:disabled {
+            background-color: #444444 !important;
+        }
+
+        html.dark-mode .footer-text {
+            color: #aaaaaa !important;
+        }
+
+        html.dark-mode .footer-text a {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode #error-msg {
+            color: #ff8b7b !important;
+        }
+
+        html.dark-mode .brand span {
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-card">
+        <a href="/" class="brand">
+            <img src="imagem.png">
+        </a>
+
+        <h2>Cadastrar-se</h2>
+
+        <div id="error-msg"></div>
+
+        <form id="registerForm">
+            <div class="input-group">
+                <i class="far fa-user main-icon"></i>
+                <input type="text" id="userName" placeholder="Nome completo" required>
+            </div>
+
+            <div class="input-group">
+                <i class="far fa-envelope main-icon"></i>
+                <input type="email" id="userEmail" placeholder="E-mail" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock main-icon"></i>
+                <input type="password" id="passwordInput" placeholder="Crie uma senha" required>
+                <i class="far fa-eye-slash toggle-password" id="toggleIcon"></i>
+            </div>
+
+            <button type="submit" class="btn-register" id="submitBtn">Cadastrar</button>
+        </form>
+
+        <p class="footer-text">
+            Já tem uma conta? <a href="/login">Faça login</a>
+        </p>
+    </div>
+
+<script>
+    // 1. Redirecionamento se já logado
+    if (localStorage.getItem('token')) {
+        window.location.href = "/"; 
+    }
+
+    // 2. Captura dos elementos CORRIGIDA (IDs sincronizados com o HTML acima)
+    const registerForm = document.getElementById('registerForm');
+    const passwordInput = document.getElementById('passwordInput');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const errorMsg = document.getElementById('error-msg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // 3. Alternar visibilidade da senha
+    toggleIcon.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        // Troca as classes do ícone
+        toggleIcon.classList.toggle('fa-eye');
+        toggleIcon.classList.toggle('fa-eye-slash');
+    });
+
+    // 4. Lógica de Cadastro
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Processando...";
+        errorMsg.style.display = 'none';
+
+        const name_user = document.getElementById('userName').value.trim();
+        const email = document.getElementById('userEmail').value.trim().toLowerCase();
+        const password = passwordInput.value;
+
+        if (!name_user || !email || !password) {
+            errorMsg.innerText = "Por favor, preencha todos os campos.";
+            errorMsg.style.display = 'block';
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Cadastrar";
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/cadastrar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name_user, email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('pendingEmail', email);
+                localStorage.setItem('flow', 'cadastro'); 
+                alert("Código de verificação enviado para o seu e-mail!");
+                window.location.href = "/verificar";
+            } else {
+                errorMsg.innerText = data.erro || "Erro ao cadastrar.";
+                errorMsg.style.display = 'block';
+            }
+        } catch (err) {
+            errorMsg.innerText = "Erro ao conectar com o servidor.";
+            errorMsg.style.display = 'block';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Cadastrar";
+        }
+    });
+</script>
+
+</body>
+</html>

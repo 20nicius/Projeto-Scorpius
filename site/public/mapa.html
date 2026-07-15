@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja IA - Mapeamento de Precisão</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        :root {
+            --verde: #008b8b;
+            --laranja: #ff7f27;
+            --vermelho: #d9534f;
+            --branco: #ffffff;
+        }
+
+        body { margin: 0; padding: 20px; background: #f0f2f5; font-family: 'Inter', sans-serif; }
+
+        /* Estilo do Card do Mapa (Fora do Fullscreen) */
+        .map-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .map-header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* TAMANHO DO MAPA FORA DO FULLSCREEN */
+        #map-wrapper { height: 400px; position: relative; width: 100%; }
+        #map { height: 100%; width: 100%; }
+
+        /* Controles flutuantes no Fullscreen */
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            display: none;
+            gap: 10px;
+        }
+
+        /* Painel de Grupo no Fullscreen */
+        .group-panel-fs {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            width: 250px;
+        }
+
+        .btn-control {
+            background: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 18px;
+            color: #444;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-control:hover { background: #f8f8f8; color: var(--verde); }
+        .btn-location { color: var(--laranja); }
+
+        /* Ajustes Fullscreen */
+        :fullscreen .map-controls, :fullscreen .group-panel-fs { display: flex; }
+        :fullscreen #map-wrapper { height: 100vh; }
+        :-webkit-full-screen .map-controls, :-webkit-full-screen .group-panel-fs { display: flex; }
+        :-webkit-full-screen #map-wrapper { height: 100vh; }
+
+        .btn-main {
+            background: var(--verde);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back {
+            background: var(--laranja);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+    
+       /* Desativa o menu de contexto e o arrastar nativo do navegador nas imagens do Leaflet */
+       .leaflet-marker-icon {
+          -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none;    /* Safari */
+          -khtml-user-select: none;    /* Konqueror HTML */
+          -moz-user-select: none;       /* Firefox */
+          -ms-user-select: none;        /* Internet Explorer/Edge */
+          user-select: none;            /* Non-prefixed version */
+          pointer-events: auto;         /* Permite que o Leaflet ainda detecte o clique/arraste */
+       }
+
+      /* Impede que a imagem seja "arrastada" como um arquivo fantasma pelo navegador */
+      img {
+         -webkit-user-drag: none;
+         -khtml-user-drag: none;
+         -moz-user-drag: none;
+         -o-user-drag: none;
+         user-drag: none;
+      }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background: #0d1117 !important;
+        }
+
+        html.dark-mode .map-card {
+            background: #1d1d1d !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+        }
+
+        html.dark-mode .map-header {
+            border-bottom-color: #333333 !important;
+            background: #1d1d1d !important;
+        }
+
+        html.dark-mode .map-header span {
+            color: var(--verde) !important;
+        }
+
+        html.dark-mode .btn-control {
+            background: #2a2a2a !important;
+            color: #cccccc !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important;
+        }
+
+        html.dark-mode .btn-control:hover {
+            background: #3a3a3a !important;
+            color: var(--verde) !important;
+        }
+
+        html.dark-mode .btn-location {
+            color: var(--laranja) !important;
+        }
+
+        html.dark-mode .group-panel-fs {
+            background: #1d1d1d !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5) !important;
+        }
+
+        html.dark-mode .group-panel-fs label {
+            color: #aaaaaa !important;
+        }
+
+        html.dark-mode .group-panel-fs input {
+            background: #0f172a !important;
+            border-color: #333333 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode .btn-main {
+            background: var(--verde) !important;
+            color: white !important;
+        }
+
+        html.dark-mode .btn-main:hover {
+            background: #00a3a3 !important;
+        }
+
+        html.dark-mode .btn-back {
+            background: var(--laranja) !important;
+            color: white !important;
+        }
+
+        html.dark-mode .btn-back:hover {
+            background: #e66a1f !important;
+        }
+
+        html.dark-mode input,
+        html.dark-mode select {
+            background: #0f172a !important;
+            border-color: #333333 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode div[style*="padding: 15px"] {
+            background: #1d1d1d !important;
+            border-top: 1px solid #333333 !important;
+        }
+
+        html.dark-mode label[style*="color: var(--verde)"] {
+            color: var(--verde) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="map-card">
+        <div class="map-header">
+            <div style="display:flex; align-items:center; gap:10px">
+                <img src="1772889366508.png" style="height: 30px;">
+                <span style="font-weight:800; color:var(--verde)">SOJA <span style="color:var(--laranja)">IA</span></span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center">
+                    <button type="button" class="btn-back" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <button class="btn-main" onclick="toggleFullscreen()" style="background:var(--laranja)">
+                    <i class="fas fa-expand-arrows-alt"></i> Iniciar Mapeamento
+                </button>
+            </div>
+        </div>
+
+        <div id="map-wrapper">
+            <div id="map"></div>
+            
+            <div class="map-controls">
+                <button class="btn-control" onclick="undo()" title="Desfazer (Ctrl+Z)"><i class="fas fa-undo"></i></button>
+                <button class="btn-control" onclick="redo()" title="Refazer (Ctrl+Y)"><i class="fas fa-redo"></i></button>
+                <button class="btn-control btn-location" onclick="getLocation()" title="Minha Localização"><i class="fas fa-crosshairs"></i></button>
+                <button class="btn-control" onclick="clearMap()" title="Limpar Tudo"><i class="fas fa-trash"></i></button>
+                <button class="btn-control" onclick="toggleFullscreen()" title="Sair"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="group-panel-fs">
+                <div style="width: 100%;">
+                    <label style="font-size: 12px; font-weight: bold; color: #666;">GRUPO ATUAL</label>
+                    <input style="box-sizing: border-box;" type="text" id="fsGroupName" placeholder="Nome do Grupo">
+                    <button class="btn-main" style="width:100%; justify-content:center" onclick="saveGroup()">
+                        Salvar Área
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+<div style="padding: 15px; display: flex; flex-direction: column; gap: 8px;">
+    <label for="savedGroups" style="font-weight: 600; color: var(--verde); font-size: 14px;">
+        Meus Grupos Salvos:
+    </label>
+    
+    <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+        <select id="savedGroups" onchange="loadGroup(this.value)" 
+                style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; outline: none; min-width: 0;">
+            <option value="">Selecione para visualizar...</option>
+        </select>
+        
+        <button onclick="deletarGrupo()" 
+                style="padding: 10px 15px; flex: 0 0 auto; background: var(--vermelho); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 10px;">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+</div>
+    </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+    
+    console.log("Mapa carregado");
+    
+    // --- VERIFICAÇÃO DE SESSÃO (CORRIGIDA) ---
+    // Aguarda o DOM estar completamente carregado antes de verificar
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = localStorage.getItem('token');
+        const userName = localStorage.getItem('userName');
+
+        // Se não houver token, redireciona para login
+        if (!token) {
+            window.location.href = "/login";
+            return;
+        }
+
+        // Valida o token com o backend
+        try {
+            const response = await fetch('/api/checar-sessao', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Token inválido');
+            }
+            
+            // Token válido - carrega as áreas salvas
+            await carregarAreasSalvas();
+            
+        } catch (err) {
+            console.error("Erro na validação de sessão:", err);
+            localStorage.clear();
+            window.location.href = "/login";
+        }
+    });
+
+    // --- FUNÇÃO DE CARREGAMENTO DE ÁREAS (CORRIGIDA) ---
+    async function carregarAreasSalvas() {
+        const token = localStorage.getItem('token');
+        
+        if (!token) return;
+
+        try {
+            const response = await fetch('/api/minhas-areas', {
+                headers: { 
+                    'Authorization': `Bearer ${token}` // Formato correto: Bearer [token]
+                }
+            });
+
+            if (response.status === 401) {
+                console.error("Token rejeitado pelo servidor.");
+                localStorage.clear();
+                window.location.href = "/login";
+                return;
+            }
+
+            const areas = await response.json();
+            const select = document.getElementById('savedGroups');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">Minhas Áreas Salvas</option>';
+            areas.forEach(area => {
+                const opt = document.createElement('option');
+                opt.value = JSON.stringify(area.coordenadas);
+                opt.innerText = area.nome;
+                select.appendChild(opt);
+            });
+        } catch (error) {
+            console.error("Erro de conexão:", error);
+        }
+    }
+    
+    // --- 3. FUNÇÃO PARA CARREGAR ÁREAS DO BANCO (AJUSTADA) ---
+function loadGroup(value) {
+    // 1. Validação inicial
+    if (!value) return;
+
+    const select = document.getElementById('savedGroups');
+    const inputNome = document.getElementById('fsGroupName');
+
+    // DICA APLICADA: Só preenche o input se não for a opção padrão (índice 0)
+    if (select && select.selectedIndex !== 0) {
+        const nomeSelecionado = select.options[select.selectedIndex].text;
+        if (inputNome) {
+            inputNome.value = nomeSelecionado;
+        }
+    }
+
+    try {
+        const listaCoordenadas = JSON.parse(value);
+        
+        // 2. Limpeza total do mapa atual
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+        if (polygon) map.removeLayer(polygon);
+
+        // 3. Reconstrói os pontos (Rastro)
+        listaCoordenadas.forEach(pos => {
+            // Suporta formatos de objeto {lat, lng} ou array [lat, lng]
+            const lat = (pos.lat !== undefined) ? pos.lat : pos[0];
+            const lng = (pos.lng !== undefined) ? pos.lng : pos[1];
+
+            if (lat !== undefined && lng !== undefined) {
+                // Para o rastro ficar visualmente bonito, usamos o marcador ou circleMarker
+                const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+                
+                // Reatribui os eventos para que o rastro acompanhe se você arrastar o ponto
+                marker.on('drag', drawPath); 
+                marker.on('contextmenu', () => removeMarker(marker));
+                
+                markers.push(marker);
+            }
+        });
+
+        // 4. Desenha a linha visual (Rastro)
+        drawPath();
+
+        // 5. Ajusta o zoom para que o rastro apareça inteiro na tela
+        if (markers.length > 0) {
+            const group = new L.featureGroup(markers);
+            map.fitBounds(group.getBounds(), { padding: [40, 40] });
+        }
+
+    } catch (error) {
+        console.error("Erro ao processar coordenadas:", error);
+        alert("Erro ao carregar os dados desta área.");
+    }
+}
+    
+    async function saveGroup() {
+        const name = document.getElementById('fsGroupName') ? document.getElementById('fsGroupName').value : prompt("Digite o nome da área:");
+        const token = localStorage.getItem('token');
+        
+        if (!name) return alert("Dê um nome ao grupo!");
+        if (markers.length < 3) return alert("Desenhe pelo menos 3 pontos (polígono) para salvar!");
+        if (!token) return alert("Sessão expirada. Por favor, faça login novamente.");
+
+        const listaCoordenadas = markers.map(m => ({
+            lat: m.getLatLng().lat,
+            lng: m.getLatLng().lng
+        }));
+
+        try {
+            const response = await fetch('/api/salvar-area', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // CORRIGIDO: Adicionado "Bearer"
+                },
+                body: JSON.stringify({
+                    nome: name,
+                    coordenadas: listaCoordenadas
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Área '" + name + "' salva com sucesso!");
+                
+                // Guarda o nome para que o DOMContentLoaded carregue ela após o refresh
+                localStorage.setItem('ultimoGrupoSalvo', name);
+                
+                // Força o refresh da guia conforme solicitado
+                window.location.reload();
+            } else {
+                alert("Erro: " + (data.erro || "Falha ao salvar"));
+            }
+        } catch (error) {
+            console.error("Erro ao salvar:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
+    }
+    
+function drawPath() {
+    // Para um rastro/caminho, precisamos de pelo menos 2 pontos
+    if (markers.length < 2) {
+        if (polygon) map.removeLayer(polygon); // 'polygon' aqui atua como a linha visual
+        return;
+    }
+
+    // Extrai as coordenadas dos marcadores
+    const coords = markers.map(m => m.getLatLng());
+
+    // Remove a linha anterior antes de desenhar a nova
+    if (polygon) map.removeLayer(polygon);
+
+    // Desenha uma POLYLINE (Linha aberta/Rastro) em vez de Polygon
+    polygon = L.polyline(coords, { 
+        color: 'var(--verde)', // Cor do rastro
+        weight: 4,             // Espessura da linha
+        opacity: 0.8,
+        dashArray: '10, 10'    // Opcional: Deixa a linha tracejada como um rastro
+    }).addTo(map);
+
+    // Cálculo de Distância (Rastro) em vez de Área
+    if (L.GeometryUtil) {
+        // Calcula a distância total do rastro em metros
+        let distanciaMetros = 0;
+        for (let i = 0; i < coords.length - 1; i++) {
+            distanciaMetros += coords[i].distanceTo(coords[i + 1]);
+        }
+        
+        const distanciaKm = (distanciaMetros / 1000).toFixed(2);
+        console.log(`Comprimento do rastro: ${distanciaKm} km`);
+    }
+}
+    
+async function deletarGrupo() {
+    const select = document.getElementById('savedGroups');
+    const inputNome = document.getElementById('fsGroupName');
+    
+    // 1. Verifica se há algo selecionado
+    if (!select || select.selectedIndex === 0) {
+        return alert("Por favor, selecione um grupo na lista para deletar.");
+    }
+
+    const nomeGrupo = select.options[select.selectedIndex].text;
+    const token = localStorage.getItem('token');
+
+    // 2. Alerta de Confirmação
+    if (!confirm(`Tem certeza que deseja excluir permanentemente o grupo "${nomeGrupo}"?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/deletar-area', {
+            method: 'DELETE',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ nome: nomeGrupo })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert(data.mensagem);
+            
+            // 3. Limpa a tela após deletar
+            if (inputNome) inputNome.value = "";
+            clearMapSilently(); // Função que você já tem para limpar o rastro
+            
+            // 4. Recarrega a lista de grupos para atualizar o select
+            await carregarAreasSalvas(); 
+        } else {
+            alert("Erro: " + (data.erro || "Não foi possível deletar."));
+        }
+    } catch (error) {
+        console.error("Erro ao deletar:", error);
+        alert("Erro ao conectar com o servidor.");
+    }
+}
+    
+    // Inicialização com zoom de alta precisão
+    const map = L.map('map', {
+        tap: false, // Melhora precisão em telas touch
+        highAccuracy: true
+    }).setView([-23.5505, -46.6333], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    let markers = [];
+    let polygon = null;
+    let history = [];
+    let redoStack = [];
+    
+    map.on('contextmenu', function(e) {
+       // Isso impede que o menu de contexto abra ao clicar com o botão direito ou segurar
+       return false; 
+    });
+
+
+    // 1. Função de Localização de Alta Precisão
+    function getLocation() {
+        if (!navigator.geolocation) return alert("GPS não suportado.");
+
+        map.locate({setView: true, maxZoom: 18, enableHighAccuracy: true});
+    }
+
+    map.on('locationfound', (e) => {
+        L.circle(e.latlng, {radius: e.accuracy, color: 'blue', fillOpacity: 0.1}).addTo(map);
+        console.log("Localização encontrada com precisão de " + e.accuracy + " metros.");
+    });
+
+    // 2. Lógica de Marcadores e Área
+    function saveState() {
+        const state = markers.map(m => ({ lat: m.getLatLng().lat, lng: m.getLatLng().lng }));
+        history.push(JSON.stringify(state));
+        redoStack = [];
+    }
+
+    map.on('click', function(e) {
+        if (!document.fullscreenElement) return; // Só adiciona no Fullscreen
+        saveState();
+        addMarker(e.latlng.lat, e.latlng.lng);
+        updatePolygon();
+    });
+
+    function addMarker(lat, lng) {
+        // Criamos o marcador com alta precisão
+        const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        
+        marker.on('dragstart', () => saveState());
+        marker.on('dragend', () => updatePolygon());
+        
+        markers.push(marker);
+    }
+
+function updatePolygon() {
+    // Remove o rastro anterior para desenhar o novo atualizado
+    if (polygon) map.removeLayer(polygon);
+
+    // Para um rastro (linha), precisamos de pelo menos 2 pontos
+    if (markers.length >= 2) {
+        const coords = markers.map(m => m.getLatLng());
+        
+        // Mudamos de L.polygon para L.polyline
+        polygon = L.polyline(coords, { 
+            color: '#ff7f27',      // Cor de rastro (Laranja)
+            weight: 5,             // Espessura da linha
+            opacity: 0.7,          // Transparência
+            lineJoin: 'round',     // Suaviza as curvas nas conexões
+            dashArray: '1, 10'     // Opcional: cria um efeito de "pontos" ou rastro
+        }).addTo(map);
+        
+        // Faz o mapa focar no rastro se for o primeiro ponto
+        if (markers.length === 2) {
+            map.fitBounds(polygon.getBounds());
+        }
+    }
+}
+
+    // 3. Undo / Redo
+    function undo() {
+        if (history.length === 0) return;
+        redoStack.push(JSON.stringify(markers.map(m => m.getLatLng())));
+        restoreState(JSON.parse(history.pop()));
+    }
+
+    function redo() {
+        if (redoStack.length === 0) return;
+        history.push(JSON.stringify(markers.map(m => m.getLatLng())));
+        restoreState(JSON.parse(redoStack.pop()));
+    }
+
+    function restoreState(state) {
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+        state.forEach(pos => addMarker(pos.lat, pos.lng));
+        updatePolygon();
+    }
+
+    function removeMarker(marker) {
+        const index = markers.indexOf(marker);
+        if (index > -1) {
+            markers.splice(index, 1);
+            map.removeLayer(marker);
+            drawPath();
+        }
+    }
+    
+function clearMapSilently() {
+    // 1. Remove todos os marcadores do mapa
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+
+    // 2. Remove a linha (rastro) do mapa
+    if (polygon) {
+        map.removeLayer(polygon);
+        polygon = null; // Reseta a variável para não dar erro no próximo desenho
+    }
+
+    // 3. Limpa o campo de texto do nome
+    const inputNome = document.getElementById('fsGroupName');
+    if (inputNome) {
+        inputNome.value = '';
+    }
+}
+
+function clearMap() {
+    if(confirm("Deseja limpar todos os pontos da tela?")) {
+        saveState();
+        clearMapSilently(); // Reaproveita a lógica de limpeza
+    }
+}
+
+    // Atalhos
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'z') undo();
+        if (e.ctrlKey && e.key === 'y') redo();
+    });
+
+    function goBack() {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '/';
+        }
+    }
+
+    function toggleFullscreen() {
+        const elem = document.getElementById('map-wrapper');
+        if (!document.fullscreenElement) {
+            elem.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    // Garante que o Leaflet se ajuste ao mudar de tamanho
+    document.addEventListener('fullscreenchange', () => {
+        setTimeout(() => map.invalidateSize(), 300);
+    });
+
+    </script>
+
+</body>
+</html>

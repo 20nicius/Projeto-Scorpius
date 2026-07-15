@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Soja IA - Home Page Oficial</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+
+    <style>
+
+        :root {
+
+            --verde-soja: #008b8b;
+
+            --laranja-action: #ff7f27;
+
+            --cinza-texto: #666;
+
+            --cinza-claro: #f4f4f4;
+
+            --sombra-card: 0 15px 35px rgba(0,0,0,0.1);
+
+        }
+
+
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #ffffff; 
+            color: #333;
+            line-height: 1.6;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+
+
+        /* HEADER COM SOMBRA NA DIVISÃO */
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%; /* Altura fixa e segura em pixels para o topo e base */
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+
+
+        .header-left { display: flex; align-items: center; gap: 50px; }
+
+        
+
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            flex-direction: column;
+            gap: 5px;
+            text-decoration: none;
+            color: inherit;
+            width: min-content;
+        }
+    
+        .brand img { width: 120%; height: 60%; }
+    
+
+        .brand div {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #334155;
+            white-space: nowrap;
+        }
+
+        /* Estilização dos Links de Navegação */
+
+        nav { display: flex; gap: 35px; }
+
+        nav a { 
+
+            font-size: 15px; 
+
+            color: #94a3b8; 
+
+            font-weight: 800; 
+
+            text-decoration: none;
+
+            cursor: pointer; 
+
+            transition: 0.3s; 
+
+        }
+
+        nav a:hover { color: var(--verde-soja); }
+
+
+
+        .auth-group { display: flex; gap: 15px; }
+
+        .btn {
+            padding: 10px 22px; /* Mudado de % para px para manter o tamanho firme no PC */
+            border-radius: 8px; 
+            font-weight: 700;
+            font-size: 14px; /* Aumentado levemente para melhor leitura no PC */
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            transition: 0.3s;
+            text-decoration: none;
+            border: none;
+            text-align: center;
+            justify-content: center;
+        }
+
+        
+
+        .btn-orange { 
+
+            background: var(--laranja-action); 
+
+            color: white; 
+
+        }
+
+        .btn-orange:hover { background: #e66a1f; transform: translateY(-1px); }
+
+        
+
+        .btn-outline { 
+
+            background: transparent; 
+
+            color: var(--verde-soja); 
+
+            border: 2px solid var(--verde-soja) !important; 
+
+        }
+
+        .btn-outline:hover { background: rgba(0, 139, 139, 0.05); }
+
+
+
+        /* HERO SECTION */
+
+        .hero {
+
+            padding: 100px 10% 60px 10%;
+
+            background: linear-gradient(180deg, #ffffff 0%, #e3e3e3 100%);
+
+        }
+
+        .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.05; margin-bottom: 20px; color: #222; }
+
+        .hero p { font-size: 18px; color: var(--cinza-texto); max-width: 450px; margin-bottom: 35px; }
+
+        
+
+        .btn-hero {
+
+            display: inline-block;
+
+            background: var(--laranja-action); 
+
+            color: white; 
+
+            padding: 18px 40px;
+
+            border-radius: 12px; 
+
+            font-size: 20px; 
+
+            font-weight: 800; 
+
+            text-decoration: none;
+
+            border: none; 
+
+            cursor: pointer;
+
+            box-shadow: 0 4px 15px rgba(255, 127, 39, 0.3);
+
+            transition: 0.3s;
+
+        }
+
+        .btn-hero:hover { background: #e66a1f; transform: scale(1.02); }
+
+
+
+        /* ICON CARDS */
+
+        .icon-section {
+
+            display: flex; 
+
+            justify-content: center; 
+
+            gap: 30px;
+
+            padding: 0 10%; 
+
+            margin-top: 120px;
+
+            margin-bottom: 100px;
+
+        }
+
+        .card-rect {
+
+            flex: 1; max-width: 280px; height: 450px;
+
+            background: white; border-radius: 10px; border-top: 8px solid var(--verde-soja);
+
+            box-shadow: var(--sombra-card);
+
+            display: flex; justify-content: center; padding-top: 50px;
+
+        }
+
+        .icon-box { width: 60px; height: 60px; color: var(--verde-soja); opacity: 0.8; }
+
+
+
+        /* Customização para todos os cards possuírem conteúdo de texto verticalizado */
+
+        .card-content-layout {
+
+            flex-direction: column;
+
+            align-items: center;
+
+            padding: 40px 20px 20px 20px !important;
+
+            text-align: center;
+
+        }
+
+        .card-body-text {
+
+            margin-top: 25px;
+
+        }
+
+        .card-body-text p {
+
+            font-size: 15px;
+
+            color: #64748b;
+
+            line-height: 1.6;
+
+        }
+
+
+
+        /* HARDWARE SECTION */
+
+        .hardware-section {
+
+            padding: 60px 10% 120px 10%;
+
+            display: flex; flex-direction: column; gap: 40px; align-items: center;
+
+        }
+
+        .hardware-card {
+
+            width: 100%; max-width: 950px; height: 280px;
+
+            background: white; border-radius: 35px; border: 2.5px solid var(--verde-soja);
+
+            display: flex; overflow: hidden;
+
+        }
+
+        .hw-image {
+
+            width: 38%; background: #f9f9f9; display: flex;
+
+            justify-content: center; align-items: center; position: relative;
+
+        }
+
+        .hw-image::after {
+
+            content: ""; position: absolute; right: -35px; top: 0;
+
+            width: 80px; height: 100%; background: #bebebe;
+
+            transform: skewX(-18deg); z-index: 1;
+
+        }
+
+        .hw-image img { width: 75%; z-index: 2; border-radius: 15px; }
+
+        
+
+        .hw-content { width: 62%; background: white; padding: 40px; display: flex; align-items: center; }
+
+        .hw-placeholder-text { width: 100%; height: 20px; background: #f0f0f0; border-radius: 10px; }
+
+        
+
+        /* POPUP DROPDOWN */
+        .user-popup {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding: 15px 0;
+            margin-top: 8px;
+            min-width: 200px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .user-popup.active {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .popup-button {
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .popup-button:hover {
+            background: rgba(0, 139, 139, 0.08);
+            color: var(--verde-soja);
+        }
+
+        .user-btn-container {
+            position: relative;
+            display: flex;
+        }
+
+
+
+        /* =========================================
+
+           MEDIA QUERIES PARA DISPOSITIVOS MÓVEIS
+
+           ========================================= */
+
+        @media (max-width: 768px) {
+
+            /* Header: Empilha a logo, a navegação e os botões */
+
+            header {
+
+                flex-direction: column;
+
+                padding: 20px 5%;
+
+                gap: 20px;
+
+            }
+
+            .header-left {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+            }
+
+            nav {
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 15px;
+
+            }
+
+            .auth-group {
+
+                width: 100%;
+
+                flex-direction: column;
+
+            }
+
+            .auth-group .btn {
+
+                width: 100%; /* Botões ocupam a largura total no celular */
+
+            }
+
+
+
+            /* Hero: Diminui fontes e centraliza o texto */
+
+            .hero {
+
+                padding: 60px 5% 40px 5%;
+
+                text-align: center;
+
+            }
+
+            .hero h1 {
+
+                font-size: 42px;
+
+            }
+
+            .hero p {
+
+                margin: 0 auto 30px auto;
+
+            }
+
+
+
+            /* Cards de Ícones: Empilha um embaixo do outro */
+
+            .icon-section {
+
+                flex-direction: column;
+
+                align-items: center;
+
+                margin-top: 60px;
+
+                margin-bottom: 60px;
+
+                gap: 20px;
+
+            }
+
+            .card-rect {
+
+                max-width: 100%;
+
+                width: 100%;
+
+                height: auto; /* Permite que o card cresça conforme o texto no celular */
+
+                min-height: 220px;
+
+            }
+
+
+
+            /* Hardware Section: Empilha a imagem e o conteúdo */
+
+            .hardware-section {
+
+                padding: 40px 5% 80px 5%;
+
+            }
+
+            .hardware-card {
+
+                flex-direction: column;
+
+                height: auto;
+
+            }
+
+            .hw-image {
+
+                width: 100%;
+
+                padding: 40px 0;
+
+            }
+
+            .hw-image::after {
+
+                display: none; /* Remove o corte inclinado cinza no celular */
+
+            }
+
+            .hw-content {
+
+                width: 100%;
+
+                padding: 30px;
+
+            }
+
+        }
+
+        /* DARK MODE STYLES */
+        html.dark-mode body {
+            background-color: #0d1117 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark-mode header {
+            background: #1d1d1d !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        html.dark-mode .brand-text {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode nav a {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode nav a:hover {
+            color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .hero {
+            background: linear-gradient(180deg, #1d1d1d 0%, #0d0d0d 100%) !important;
+        }
+
+        html.dark-mode .hero h1 {
+            color: #ffffff !important;
+        }
+
+        html.dark-mode .hero p {
+            color: #aaaaaa !important;
+        }
+
+        html.dark-mode .btn-hero {
+            background: var(--laranja-action) !important;
+            color: white !important;
+        }
+
+        html.dark-mode .btn-hero:hover {
+            background: #e66a1f !important;
+        }
+
+        html.dark-mode .btn-orange {
+            background: var(--laranja-action) !important;
+            color: white !important;
+        }
+
+        html.dark-mode .btn-orange:hover {
+            background: #e66a1f !important;
+        }
+
+        html.dark-mode .btn-outline {
+            background: transparent !important;
+            color: var(--verde-soja) !important;
+            border-color: var(--verde-soja) !important;
+        }
+
+        html.dark-mode .btn-outline:hover {
+            background: rgba(0, 139, 139, 0.15) !important;
+        }
+
+        html.dark-mode .card-rect {
+            background: #1d1d1d !important;
+            border-top-color: var(--verde-soja) !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+        }
+
+        html.dark-mode .card-body-text p {
+            color: #aaaaaa !important;
+        }
+
+        html.dark-mode .hardware-card {
+            background: #1d1d1d !important;
+            border-color: var(--verde-soja) !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+        }
+
+        html.dark-mode .hw-image {
+            background: #0f172a !important;
+        }
+
+        html.dark-mode .hw-content {
+            background: #1d1d1d !important;
+        }
+
+        html.dark-mode .hw-placeholder-text {
+            background: #2a2a2a !important;
+        }
+
+        html.dark-mode .user-popup {
+            background: #1d1d1d !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        html.dark-mode .popup-button {
+            color: #cccccc !important;
+        }
+
+        html.dark-mode .popup-button:hover {
+            background: rgba(0, 139, 139, 0.2) !important;
+            color: var(--verde-soja) !important;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <header>
+
+        <div class="header-left">
+
+            <a href="/" class="brand">
+                
+                <img src="imagem.png">
+                
+                <div>scorpii V1</div>
+                
+
+            </a>
+
+        </div>
+        
+        <nav>
+
+            <a href="saiba_mais.html">Saiba mais</a>
+
+            <a href="credito.html">Créditos</a>
+
+            <a href="#">Planos</a>
+
+            <a href="novidades.html">Novidades</a>
+
+        </nav>
+
+        <div class="auth-group">
+
+            <a href="cadastro" class="btn btn-orange">
+
+                Cadastrar-se <i class="fas fa-lock" style="font-size: 12px;"></i>
+
+            </a>
+
+            <a href="login" class="btn btn-outline">
+
+                Entrar <i class="fas fa-lock" style="font-size: 12px;"></i>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <section class="hero">
+
+            <h1>Tudo em um <br> só lugar</h1>
+
+            <p>Monitore seus campos e cultivos em um só lugar. Ajudando você a tomar decisões mais rápidas e precisas</p>
+
+            <a href="cadastro" class="btn-hero" id="mainActionBtn">Comece grátis já</a>
+
+        </section>
+
+
+
+        <div class="icon-section">
+
+            <div class="card-rect card-content-layout">
+
+                <div class="card-header-icon">
+                    <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m12 8-4 4 4 4M16 12H8"/></svg>
+                </div>
+
+                <div class="card-body-text">
+                    <p>Envio de dados rápido e preciso, o projeto colhe os dados diariamente e os disponibiliza de forma fracionada, garantindo assim uma corrente de informações consistente.</p>
+                </div>
+
+            </div>
+
+            <div class="card-rect card-content-layout">
+
+                <div class="card-header-icon">
+                    <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+
+                <div class="card-body-text">
+                    <p>A instalação de uma unidade pode salvar uma lavoura inteira, diminuindo assim os prejuízos.</p>
+                </div>
+
+            </div>
+
+            <div class="card-rect card-content-layout">
+
+                <div class="card-header-icon">
+                    <svg class="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a5.5 5.5 0 0 0 0-11h-1.5a7 7 0 1 0-13.5 3h-.5a4 4 0 0 0 0 8h15.5Z"/></svg>
+                </div>
+
+                <div class="card-body-text">
+                    <p>Acesso aos dados a qualquer hora ou lugar, garantindo um monitoramento preciso e 24h.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <section class="hardware-section">
+
+            <div class="hardware-card">
+
+                <div class="hw-image">
+
+                    <img src="https://via.placeholder.com/200x150" alt="Módulo Hardware">
+
+                </div>
+
+                <div class="hw-content">
+
+                    <div class="hw-placeholder-text"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const authGroup = document.querySelector('.auth-group');
+        const token = localStorage.getItem('token');
+        const userName = localStorage.getItem('userName');
+
+        // Botão principal da hero
+        const mainActionBtn = document.getElementById('mainActionBtn');
+
+        // Se o usuário estiver logado
+        if (token && userName) {
+            // Pegamos o primeiro nome ou o nome completo conforme sua preferência
+            const nomeExibicao = userName;
+
+            // Troca o texto e ação do botão principal
+            if (mainActionBtn) {
+                mainActionBtn.textContent = 'Monitore seus campos aqui';
+                mainActionBtn.setAttribute('href', 'info.html');
+            }
+
+            // Criamos um container com posição relativa, um botão de usuário e um popup dropdown
+            authGroup.innerHTML = `
+                <div class="user-btn-container">
+                    <button id="userMenuBtn" style="
+                        text-decoration: none;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        padding: 10px 20px;
+                        background: rgba(0, 139, 139, 0.1);
+                        border-radius: 12px;
+                        width: 100%;
+                        transition: 0.3s;
+                        border: none;
+                        cursor: pointer;
+                    ">
+
+                        <i class="fas fa-user-circle" style="color: var(--verde-soja); font-size: 20px;"></i>
+                        <span style="
+                            font-weight: 800;
+                            color: var(--verde-soja);
+                            font-size: 15px;
+                            white-space: nowrap;
+                        ">
+                            ${nomeExibicao}
+                        </span>
+                    </button>
+
+                    <div class="user-popup" id="userPopup">
+                        <a href="/mapa" class="popup-button" style="display: flex; align-items: center; gap: 10px; color: inherit;">
+                            <i class="fas fa-map-marked-alt"></i> Editar Mapas
+                        </a>
+                        <a href="/config" class="popup-button" style="display: flex; align-items: center; gap: 10px; color: inherit;">
+                            <i class="fas fa-sliders-h"></i> Configurações
+                        </a>
+                        <button id="logoutBtn" class="popup-button" style="display: flex; align-items: center; gap: 10px; color: inherit;">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Adicionar evento para mostrar/ocultar o popup
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userPopup = document.getElementById('userPopup');
+
+            userMenuBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                userPopup.classList.toggle('active');
+            });
+
+            // Fechar o popup ao clicar fora dele
+            document.addEventListener('click', function(e) {
+                if (!userMenuBtn.contains(e.target) && !userPopup.contains(e.target)) {
+                    userPopup.classList.remove('active');
+                }
+            });
+
+            // Adicionar funcionalidade ao botão Sair
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', function() {
+                localStorage.clear();
+                window.location.href = "/login";
+            });
+        }
+    });
+    </script>
+
+</body>
+
+</html>
